@@ -10,7 +10,9 @@
 >
 > 已发布中文页面、标普 500 与纳斯达克 100 热力图，并配置 MongoDB Atlas Free 和 Google 登录。2026 年 11 月 13 日已验证个人 Google 账号登录、返回仪表盘及刷新后的登录状态保留。
 >
-> Google OAuth 当前处于 Testing 模式，仅已添加的测试账号可登录。Finnhub 尚未配置，部分报价和搜索功能仍不可用；邮件和 AI 摘要也需另行配置。
+> Google OAuth 当前处于 Testing 模式，仅已添加的测试账号可登录。未配置 Finnhub 时，报价、股票搜索和相关新闻使用 Yahoo Finance 备用源，报价采用 5 分钟共享缓存，展示最新成交时间；不保证交易所实时行情。Finnhub 可选。
+>
+> 默认启用站内价格提醒：网页打开时每分钟检查，触发记录保存在数据库并显示站内提示。网页关闭后不发送邮件或推送；邮件与 AI 摘要仍需另行配置。
 >
 > 当前使用 Vercel 直接源码部署。Vercel 与本 GitHub 仓库尚未建立自动部署授权，推送代码不会自动更新线上版本。
 
@@ -25,7 +27,8 @@
 - Node.js 22；安装：`npm ci`；构建：`npm run build`。
 - Vercel 可从此 GitHub 仓库部署，使用默认提供的 HTTPS 域名。
 - 账号与自选股需要 `MONGODB_URI`、`BETTER_AUTH_SECRET` 和 `BETTER_AUTH_URL`。
-- 行情报价需要 `FINNHUB_API_KEY` 或 `FINNHUB_API_KEYS`；TradingView 图表可独立加载。
+- 行情默认使用 Yahoo Finance 备用源，无需密钥；可选 `FINNHUB_API_KEY` 或 `FINNHUB_API_KEYS`。TradingView 图表可独立加载。
+- `NEXT_PUBLIC_OPENSTOCK_DATA_MODE=delayed` 使用 5 分钟报价缓存；`NEXT_PUBLIC_OPENSTOCK_ALERT_MODE=in-app` 启用站内提醒，无需付费 Cloud 订阅。
 - 邮件、后台任务和 AI 摘要还需配置相应服务，参见下方原项目说明及 `.env.example`。
 - 所有密钥请放入部署平台的环境变量，不要提交到 GitHub。
 - `/local-preview` 仅用于本地开发，生产环境不可访问。
@@ -183,8 +186,8 @@ Every variable is listed with comments in [`.env.example`](.env.example). The on
 | `MONGODB_URI` | Yes | Your MongoDB database |
 | `BETTER_AUTH_SECRET` | Yes | Signs sessions. Generate it with `openssl rand -hex 32`. Auth refuses to run in production without it |
 | `BETTER_AUTH_URL` | Yes | The app's public URL, used for auth callbacks and links in emails |
-| `FINNHUB_API_KEY` | Yes | Market data. Or put several free keys, comma-separated, in `FINNHUB_API_KEYS`: they're rotated, and each adds 60 requests a minute |
-| `NEXT_PUBLIC_OPENSTOCK_DATA_MODE` | No | `cached` (hourly, the default) or `realtime` (every 15 seconds, with price alerts). Fixed when the app is built: rebuild after changing it |
+| `FINNHUB_API_KEY` | No | Optional market data provider; Yahoo Finance is used when absent. Or put several free keys, comma-separated, in `FINNHUB_API_KEYS`: they're rotated, and each adds 60 requests a minute |
+| `NEXT_PUBLIC_OPENSTOCK_DATA_MODE` | No | `delayed` (five-minute cache, default), `cached` (hourly), or `realtime` (Finnhub every 15 seconds). Fixed when the app is built: rebuild after changing it |
 | `INNGEST_SIGNING_KEY`, `INNGEST_EVENT_KEY` | In production | Background jobs: welcome emails, price alerts and the weekly digest |
 | `NODEMAILER_EMAIL`, `NODEMAILER_PASSWORD` | No | Sending email through Gmail, with an app password. Without them, emails are skipped |
 | `GEMINI_API_KEY` (or MiniMax or Siray) | No | AI-written welcome emails and the news digest |
