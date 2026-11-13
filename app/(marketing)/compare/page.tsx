@@ -4,8 +4,8 @@ import PageHero from '@/components/marketing/PageHero';
 import { GUIDES } from '@/lib/seo/comparisons';
 import { siteUrl } from '@/lib/seo/site';
 
-const title = 'Guides | OpenStock';
-const description = 'What OpenStock is and is not: an open-source stock tracker with TradingView charts, a watchlist, email alerts, and self-hosting. Honest comparisons, no account required.';
+const title = "使用指南 | OpenStock";
+const description = "了解 OpenStock 的能力与边界：开源股票跟踪工具，支持 TradingView 图表、自选股、邮件提醒和自行部署。无需账号即可阅读客观对比。";
 
 export function generateMetadata(): Metadata {
     const url = `${siteUrl()}/compare`;
@@ -22,9 +22,9 @@ export default function GuideIndexPage() {
     return (
         <>
             <PageHero
-                kicker="Guides"
-                title="What OpenStock is for."
-                sub="Short, factual pages for the questions people actually ask. Charts on this site are TradingView widgets. The signed-in app is free to try."
+                kicker="使用指南"
+                title="OpenStock 能帮你做什么。"
+                sub="围绕常见问题提供简明说明。本站图表采用 TradingView 组件，登录后可免费体验应用。"
             />
             <section className="mx-auto mt-12 grid max-w-[1200px] gap-3 px-5 md:grid-cols-2">
                 {GUIDES.map((guide) => (
