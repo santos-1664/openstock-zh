@@ -246,7 +246,8 @@
     "quotesTitle": "Quotes",
     "quotesSub": "{market} leaders by group",
     "storiesTitle": "Top stories",
-    "storiesSub": "Newest first"
+    "storiesSub": "Newest first",
+    "pulseSubProvider": "Index tracking ETFs · Quotes via {provider}"
   },
   "MarketSwitcher": {
     "label": "Markets",
@@ -260,7 +261,9 @@
   "DataFreshness": {
     "live": "Live · 15s",
     "asOf": "As of {time} · refreshed hourly",
-    "delayed": "Delayed · refreshed hourly"
+    "delayed": "Delayed · refreshed hourly",
+    "delayedFiveMinutes": "Delayed quotes · 5-minute cache",
+    "asOfFiveMinutes": "As of {time} · 5-minute cache"
   },
   "YahooQuotes": {
     "changePercent": "Change %",
@@ -400,7 +403,9 @@
     "addFailed": "Couldn’t add the symbol",
     "addTitle": "Add {symbol} to {list}",
     "add": "Add",
-    "adding": "Adding"
+    "adding": "Adding",
+    "loadFailed": "Stock search is temporarily unavailable. Please try again.",
+    "retry": "Retry search"
   },
   "UpdateBanner": {
     "new": "New",
@@ -511,7 +516,7 @@
     "newsSubWatched": "Latest stories for the symbols you watch",
     "newsSubGeneral": "General market news",
     "alertsTitle": "Alerts",
-    "alertsSubActive": "{count} active · checked every 5 minutes",
+    "alertsSubActive": "{count} active · checked every minute while open",
     "alertsSubCloud": "An OpenStock Cloud feature",
     "listsTitle": "My lists",
     "listsSub": "Group the stocks you watch into named lists"
@@ -543,7 +548,8 @@
     "below": "Below {price}",
     "until": "until {date}",
     "removeTitle": "Remove alert",
-    "removeLabel": "Remove alert for {symbol}"
+    "removeLabel": "Remove alert for {symbol}",
+    "inAppNote": "In-app alerts: checked every minute while the page is open. Quotes may be cached or delayed. No email or push is sent when the page is closed."
   },
   "CreateAlertModal": {
     "risesAbove": "Rises above",
@@ -563,7 +569,8 @@
     "cloudTitle": "Price alerts come with Cloud",
     "cloudBody": "Cloud adds email price alerts and live quotes for $5 a month. It’s coming soon. Self-hosting includes both today.",
     "seeCloud": "See OpenStock Cloud",
-    "selfHost": "Self-host"
+    "selfHost": "Self-host",
+    "descriptionInApp": "Get an in-app notice when your target is reached. Keep the page open; checks run every minute against potentially delayed quotes. Email is not sent."
   },
   "NewsList": {
     "emptyTitle": "No recent news",
@@ -600,5 +607,16 @@
     "retryHint": "“{list}” was created — press the button again to retry adding {symbol}.",
     "retryAdd": "Retry add",
     "createAndAdd": "Create and add"
+  },
+  "AlertMonitor": {
+    "triggered": "{symbol} reached your alert target",
+    "price": "Current quote {price}; target {target}",
+    "checkFailed": "Price alerts could not be checked. Retrying shortly."
+  },
+  "AppFeedback": {
+    "loading": "Loading, please wait…",
+    "errorTitle": "This page could not be loaded",
+    "errorBody": "A data service may be temporarily unavailable. Please try again.",
+    "retry": "Try again"
   }
 }
