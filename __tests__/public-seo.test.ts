@@ -3,7 +3,6 @@ import { NextRequest } from 'next/server';
 import { describe, expect, it, afterEach } from 'vitest';
 import { config, middleware } from '@/middleware';
 import { isPublicPath, PUBLIC_EXACT_PATHS } from '@/lib/public-paths';
-import { GUIDES, findGuide } from '@/lib/seo/comparisons';
 import { filingUrl, formatFiscalYearEnd, formatFilingDate, parseSubmissions, stateName } from '@/lib/seo/edgar';
 import { sitemapEntries } from '@/lib/seo/sitemap';
 import { siteUrl } from '@/lib/seo/site';
@@ -11,7 +10,7 @@ import { adjacentTickers, findTicker, relatedTickers, tickerIntro, tickerPath, U
 
 describe('isPublicPath', () => {
     it('lets crawlers and the new public sections through', () => {
-        for (const path of ['/', '/about', '/robots.txt', '/sitemap.xml', '/s', '/s/AAPL', '/s/BRK.B', '/compare', '/compare/self-hosted-stock-tracker']) {
+        for (const path of ['/', '/about', '/robots.txt', '/sitemap.xml', '/s', '/s/AAPL', '/s/BRK.B']) {
             expect(isPublicPath(path), path).toBe(true);
         }
     });
@@ -20,13 +19,13 @@ describe('isPublicPath', () => {
         for (const path of ['/stocks', '/stocks/AAPL', '/dashboard', '/watchlist', '/profile', '/sign-in', '/something']) {
             expect(isPublicPath(path), path).toBe(false);
         }
-        expect(isPublicPath('/sponsor')).toBe(true);
+        for (const path of ['/sponsor', '/love', '/compare', '/compare/self-hosted-stock-tracker', '/changelog', '/api-docs']) expect(isPublicPath(path), path).toBe(false);
     });
 });
 
 describe('middleware', () => {
     it('does not redirect public pages or crawler files', async () => {
-        for (const path of ['/robots.txt', '/sitemap.xml', '/s/AAPL', '/compare/free-tradingview-alternative', '/about']) {
+        for (const path of ['/robots.txt', '/sitemap.xml', '/s/AAPL', '/help', '/about']) {
             const response = await middleware(new NextRequest(`http://localhost${path}`));
             expect(response.headers.get('location'), path).toBeNull();
         }
@@ -125,7 +124,7 @@ describe('edgar helpers', () => {
 });
 
 describe('sitemap', () => {
-    it('lists marketing pages, guides and every ticker, and not the signed-in app', () => {
+    it('lists retained public pages and tickers, without retired promotions or private app routes', () => {
         const entries = sitemapEntries('https://openstock.example/');
         const urls = entries.map((entry) => entry.url);
         expect(urls).toContain('https://openstock.example/');
@@ -134,10 +133,7 @@ describe('sitemap', () => {
         for (const path of PUBLIC_EXACT_PATHS) {
             expect(urls).toContain(`https://openstock.example${path}`);
         }
-        for (const guide of GUIDES) {
-            expect(urls).toContain(`https://openstock.example/compare/${guide.slug}`);
-            expect(findGuide(guide.slug)?.title).toBe(guide.title);
-        }
+        for (const retired of ['/compare', '/sponsor', '/love', '/changelog', '/api-docs']) expect(urls.some((url) => url.includes(retired))).toBe(false);
         expect(urls.some((url) => url.includes('/stocks'))).toBe(false);
         expect(urls.some((url) => url.includes('/dashboard'))).toBe(false);
         expect(new Set(urls).size).toBe(urls.length);
