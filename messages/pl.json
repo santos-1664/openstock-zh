@@ -246,7 +246,8 @@
     "storiesTitle": "Najważniejsze wiadomości",
     "storiesSub": "Najnowsze na początku",
     "sub": "{market} · {status, select, open {rynek otwarty} other {rynek zamknięty}} · {feed, select, live {dane na żywo} delayed {dane opóźnione} other {dane na koniec dnia}}",
-    "pulseSubTradingView": "{feed, select, live {Notowania na żywo z TradingView} delayed {Opóźnione notowania z TradingView} other {Notowania na koniec dnia z TradingView}}"
+    "pulseSubTradingView": "{feed, select, live {Notowania na żywo z TradingView} delayed {Opóźnione notowania z TradingView} other {Notowania na koniec dnia z TradingView}}",
+    "pulseSubProvider": "ETF-y śledzące indeksy · Notowania: {provider}"
   },
   "MarketSwitcher": {
     "label": "Rynki",
@@ -260,7 +261,9 @@
   "DataFreshness": {
     "live": "Na żywo · 15 s",
     "asOf": "Stan na {time} · odświeżane co godzinę",
-    "delayed": "Opóźnione · odświeżane co godzinę"
+    "delayed": "Opóźnione · odświeżane co godzinę",
+    "delayedFiveMinutes": "Notowania opóźnione · pamięć podręczna 5 min",
+    "asOfFiveMinutes": "Stan na {time} · pamięć podręczna 5 min"
   },
   "YahooQuotes": {
     "changePercent": "Zmiana %",
@@ -400,7 +403,9 @@
     "addFailed": "Nie udało się dodać symbolu",
     "addTitle": "Dodaj {symbol} do listy {list}",
     "add": "Dodaj",
-    "adding": "Dodawanie"
+    "adding": "Dodawanie",
+    "loadFailed": "Wyszukiwanie jest chwilowo niedostępne. Spróbuj ponownie.",
+    "retry": "Szukaj ponownie"
   },
   "UpdateBanner": {
     "new": "Nowość",
@@ -510,7 +515,7 @@
     "newsSubWatched": "Najnowsze wiadomości dotyczące symboli, które obserwujesz",
     "newsSubGeneral": "Ogólne wiadomości rynkowe",
     "alertsTitle": "Alerty",
-    "alertsSubActive": "Aktywne: {count} · sprawdzane co 5 minut",
+    "alertsSubActive": "{count} aktywnych · sprawdzanie co minutę przy otwartej stronie",
     "alertsSubCloud": "Funkcja OpenStock Cloud",
     "symbolCount": "{count, plural, one {# symbol} few {# symbole} many {# symboli} other {# symbolu}}",
     "listsTitle": "Moje listy",
@@ -543,7 +548,8 @@
     "below": "Poniżej {price}",
     "until": "do {date}",
     "removeTitle": "Usuń alert",
-    "removeLabel": "Usuń alert: {symbol}"
+    "removeLabel": "Usuń alert: {symbol}",
+    "inAppNote": "Alerty w aplikacji są sprawdzane co minutę przy otwartej stronie. Notowania mogą być opóźnione. Po zamknięciu strony nie wysyłamy wiadomości e-mail ani powiadomień push."
   },
   "CreateAlertModal": {
     "risesAbove": "Wzrośnie powyżej",
@@ -563,7 +569,8 @@
     "seeCloud": "Zobacz OpenStock Cloud",
     "selfHost": "Hostuj samodzielnie",
     "created": "Ustawiono alert: {symbol} {condition, select, ABOVE {powyżej} other {poniżej}} {price}",
-    "alreadyMet": "Cena jest już {condition, select, ABOVE {powyżej} other {poniżej}} tego poziomu — alert uruchomi się przy następnym sprawdzeniu"
+    "alreadyMet": "Cena jest już {condition, select, ABOVE {powyżej} other {poniżej}} tego poziomu — alert uruchomi się przy następnym sprawdzeniu",
+    "descriptionInApp": "Powiadomienie w aplikacji po osiągnięciu ceny docelowej. Sprawdzanie co minutę przy otwartej stronie; notowania mogą być opóźnione. Bez wiadomości e-mail."
   },
   "NewsList": {
     "emptyTitle": "Brak najnowszych wiadomości",
@@ -600,5 +607,16 @@
     "retryHint": "Lista „{list}” została utworzona — kliknij przycisk jeszcze raz, żeby ponowić dodanie {symbol}.",
     "retryAdd": "Ponów dodanie",
     "createAndAdd": "Utwórz i dodaj"
+  },
+  "AlertMonitor": {
+    "triggered": "{symbol}: osiągnięto cenę docelową",
+    "price": "Aktualna cena {price}; cel {target}",
+    "checkFailed": "Nie udało się sprawdzić alertów. Wkrótce spróbujemy ponownie."
+  },
+  "AppFeedback": {
+    "loading": "Ładowanie, proszę czekać…",
+    "errorTitle": "Nie udało się załadować strony",
+    "errorBody": "Usługa danych może być chwilowo niedostępna. Spróbuj ponownie.",
+    "retry": "Spróbuj ponownie"
   }
 }
