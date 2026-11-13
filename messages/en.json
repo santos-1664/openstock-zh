@@ -178,7 +178,10 @@
     "signInFailed": "Sign in failed",
     "connectionError": "Check your connection and try again.",
     "redirecting": "Redirecting",
-    "or": "or"
+    "or": "or",
+    "googleContinue": "Continue with Google",
+    "googleUnavailable": "Google sign-in is not available yet. You can browse the public market heatmaps.",
+    "browseHeatmaps": "Browse market heatmaps"
   },
   "CountrySelect": {
     "placeholder": "Select your country...",
