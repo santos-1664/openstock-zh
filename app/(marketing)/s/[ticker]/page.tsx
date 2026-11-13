@@ -8,7 +8,6 @@ import SignUpCta from '@/components/seo/SignUpCta';
 import TradingViewEmbed from '@/components/seo/TradingViewEmbed';
 import { CANDLE_CHART_WIDGET_CONFIG, symbolInfoConfig } from '@/lib/constants';
 import { companyBrowseUrl, formatFilingDate, getEdgarCompany, type EdgarFiling } from '@/lib/seo/edgar';
-import { GUIDES } from '@/lib/seo/comparisons';
 import { siteUrl } from '@/lib/seo/site';
 import { adjacentTickers, findTicker, relatedTickers, sectorAnchor, tickerIntro, tickerPath, type UsTicker } from '@/lib/seo/tickers';
 import { formatSymbolForTradingView, tradingViewSymbolUrl } from '@/lib/utils';
@@ -202,7 +201,7 @@ export default async function PublicTickerPage({ params }: { params: Promise<Par
                                 此页面显示实时价格吗？<ChevronDown className="size-4 flex-none text-faint transition-transform group-open:rotate-180" />
                             </summary>
                             <p className="max-w-3xl px-5 pb-5 text-[15px] leading-relaxed text-muted-foreground">
-                                图表中的价格由浏览器内的 TradingView 组件显示，OpenStock 不在此页面另行提供报价。注册免费账号即可将{ticker.symbol} 加入自选股；部署环境启用邮件提醒后，可在应用内设置。</p>
+                                图表中的价格由浏览器内的 TradingView 组件显示，OpenStock 不在此页面另行提供报价。登录账号即可将{ticker.symbol} 加入自选股，并设置站内价格提醒；提醒需要保持网页打开。</p>
                         </details>
                         <details className="group">
                             <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold [&::-webkit-details-marker]:hidden">
@@ -214,12 +213,6 @@ export default async function PublicTickerPage({ params }: { params: Promise<Par
                     </div>
                 </div>
             </section>
-
-            <nav aria-label="相关指南" className="mt-10 flex flex-wrap gap-x-4 gap-y-2 text-[13px] font-semibold text-muted-foreground">
-                {GUIDES.slice(0, 4).map((guide) => (
-                    <Link key={guide.slug} href={`/compare/${guide.slug}`} className="hover:text-foreground">{guide.title}</Link>
-                ))}
-            </nav>
 
             <div className="mt-10">
                 <SignUpCta
