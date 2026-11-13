@@ -30,6 +30,24 @@ export function normalizeYahooSymbol(symbol: string): string | null {
 
 export const isYahooSymbol = (symbol: string) => normalizeYahooSymbol(symbol) !== null;
 
+// Broader quote coverage, without changing which markets use the dedicated Yahoo UI.
+// Never treat an arbitrary string/URL as a provider symbol.
+export function normalizeYahooQuoteSymbol(symbol: string): string | null {
+    const upper = String(symbol ?? '').trim().toUpperCase();
+    const special = normalizeYahooSymbol(upper);
+    if (special) return special;
+    const us = upper.replace(/^(NASDAQ|NYSE|AMEX|NYSEARCA):/, '');
+    if (/^[A-Z][A-Z0-9.-]{0,23}$/.test(us)) return us.replace(/\.(A|B)$/, '-$1');
+    const exchanges: Record<string, string> = { XETR: 'DE', TSX: 'TO', ASX: 'AX', BSE: 'BO', NSE: 'NS' };
+    const [exchange, ticker] = upper.split(':');
+    if (exchanges[exchange] && /^[A-Z0-9&.-]{1,20}$/.test(ticker ?? '')) return `${ticker}.${exchanges[exchange]}`;
+    const crypto = /^BINANCE:([A-Z0-9]{2,12})(USDT|USDC)$/.exec(upper);
+    if (crypto) return `${crypto[1]}-USD`;
+    const fx = /^FX:([A-Z]{6})$/.exec(upper);
+    if (fx) return `${fx[1]}=X`;
+    return null;
+}
+
 // "TADAWUL:2222" -> "2222.SR", "GPW:PKN" -> "PKN.WA": the symbols our stock pages use. Indices have no stock page.
 export const yahooAppSymbol = (tvSymbol: string) => {
     const yahoo = normalizeYahooSymbol(tvSymbol);
@@ -46,13 +64,19 @@ export type YahooDailyQuote = {
     changePercent: number;
     currency: string;
     name: string;
+    open?: number;
+    high?: number;
+    low?: number;
+    previousClose?: number;
+    tradeTime?: number;
+    exchange?: string;
 };
 
 type YahooChartJson = {
     chart?: {
         result?: Array<{
-            meta?: { currency?: string; shortName?: string; longName?: string; regularMarketPrice?: number; fulldayChange?: number; regularMarketChangePercent?: number };
-            indicators?: { quote?: Array<{ close?: (number | null)[] }> };
+            meta?: { currency?: string; shortName?: string; longName?: string; regularMarketPrice?: number; fulldayChange?: number; regularMarketChangePercent?: number; regularMarketTime?: number; regularMarketDayHigh?: number; regularMarketDayLow?: number; previousClose?: number; exchangeName?: string };
+            indicators?: { quote?: Array<{ close?: (number | null)[]; open?: (number | null)[]; high?: (number | null)[]; low?: (number | null)[] }> };
         }>;
     };
 };
@@ -65,14 +89,24 @@ export function dailyQuoteFromChart(json: unknown, fallbackCurrency = 'USD'): Ya
     const meta = result?.meta;
     const closes = (result?.indicators?.quote?.[0]?.close ?? []).filter((n): n is number => Number.isFinite(n));
     if (!result || closes.length === 0) return null;
-    const price = meta?.regularMarketPrice ?? closes[closes.length - 1];
-    const prev = closes.length > 1 ? closes[closes.length - 2] : null;
-    const change = meta?.fulldayChange ?? (prev != null ? price - prev : 0);
+    const finite = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
+    const price = finite(meta?.regularMarketPrice) ? meta.regularMarketPrice : closes[closes.length - 1];
+    if (!(price > 0)) return null;
+    const prev = finite(meta?.previousClose) ? meta.previousClose : closes.length > 1 ? closes[closes.length - 2] : null;
+    const change = finite(meta?.fulldayChange) ? meta.fulldayChange : prev != null ? price - prev : 0;
+    const last = (values?: (number | null)[]) => values?.filter(finite).at(-1);
+    const candle = result.indicators?.quote?.[0];
     return {
         price,
         change,
-        changePercent: meta?.regularMarketChangePercent ?? (prev ? (change / prev) * 100 : 0),
+        changePercent: finite(meta?.regularMarketChangePercent) ? meta.regularMarketChangePercent : prev ? (change / prev) * 100 : 0,
         currency: result.meta?.currency || fallbackCurrency,
         name: result.meta?.longName || result.meta?.shortName || '',
+        open: last(candle?.open),
+        high: finite(meta?.regularMarketDayHigh) ? meta.regularMarketDayHigh : last(candle?.high),
+        low: finite(meta?.regularMarketDayLow) ? meta.regularMarketDayLow : last(candle?.low),
+        previousClose: prev ?? undefined,
+        tradeTime: finite(meta?.regularMarketTime) ? meta.regularMarketTime : undefined,
+        exchange: meta?.exchangeName,
     };
 }
