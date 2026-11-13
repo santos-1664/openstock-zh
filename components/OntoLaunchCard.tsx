@@ -26,7 +26,7 @@ export default function OntoLaunchCard() {
             <button
                 type="button"
                 onClick={() => setClosed(true)}
-                aria-label="Close"
+                aria-label="关闭"
                 className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-lg text-lg leading-none text-[var(--faint)] hover:bg-[var(--hover)] hover:text-[var(--text)]"
             >
                 ×
@@ -34,20 +34,17 @@ export default function OntoLaunchCard() {
             <p className="m-0 mb-2 flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.12em] text-[var(--muted)]">
                 {/* eslint-disable-next-line @next/next/no-img-element -- Onto's mark, served from its own site */}
                 <img src="https://buildonto.dev/icon.png" alt="" width={16} height={16} className="h-4 w-4" />
-                From the OpenStock team
-            </p>
-            <p className="m-0 text-base font-semibold leading-snug text-[var(--text)]">We just launched Onto on Product Hunt.</p>
+                来自 OpenStock 团队</p>
+            <p className="m-0 text-base font-semibold leading-snug text-[var(--text)]">我们刚刚在 Product Hunt 发布了 Onto。</p>
             <p className="m-0 mt-1 mb-3 text-[13.5px] leading-relaxed text-[var(--muted)]">
-                It makes websites readable to AI agents. If you like what we build, an upvote would mean a lot.
-            </p>
+                它能帮助 AI 智能体读取网站。如果你喜欢我们的产品，欢迎投票支持。</p>
             <a
                 href={PH}
                 target="_blank"
                 rel="noopener"
                 className="flex w-full items-center justify-center rounded-full bg-[var(--brand)] px-4 py-2.5 text-sm font-semibold text-[var(--on-brand)] no-underline hover:bg-[var(--brand-strong)]"
             >
-                ▲ Upvote Onto on Product Hunt
-            </a>
+                ▲ 在 Product Hunt 为 Onto 投票</a>
         </aside>
     );
 }
