@@ -68,9 +68,19 @@ export async function searchYahooStocks(query: string): Promise<StockWithWatchli
 }
 
 export async function getYahooNews(symbols: string[] = []): Promise<MarketNewsArticle[]> {
-    const query = symbols.filter((s) => /^[A-Z0-9.&:-]{1,25}$/.test(s)).slice(0, 3).join(' ') || 'stock market';
-    const data = await searchYahoo(query);
-    return (data.news ?? []).filter((n) => n.title && /^https:\/\//.test(n.link ?? '')).slice(0, 6).map((n, i) => ({
+    const tickers = [...new Set(symbols.map((s) => String(s).trim().toUpperCase()))]
+        .filter((s) => /^[A-Z0-9.&:-]{1,25}$/.test(s)).slice(0, 3);
+    // Search accepts one ticker, not a space-separated watchlist. A failed ticker must not discard the rest.
+    const results = await Promise.allSettled((tickers.length ? tickers : ['stock market']).map(searchYahoo));
+    const completed = results.filter((r): r is PromiseFulfilledResult<YahooSearchResponse> => r.status === 'fulfilled');
+    if (!completed.length) throw new Error('Market news is temporarily unavailable');
+    const seen = new Set<string>();
+    const news = completed.flatMap((r) => r.value.news ?? []).filter((n) => {
+        if (!n.title || !/^https:\/\//.test(n.link ?? '') || seen.has(n.link!)) return false;
+        seen.add(n.link!);
+        return true;
+    }).sort((a, b) => (b.providerPublishTime || 0) - (a.providerPublishTime || 0));
+    return news.slice(0, 6).map((n, i) => ({
         id: i, headline: n.title!, summary: '', source: n.publisher || 'Yahoo Finance', url: n.link!,
         datetime: Number.isFinite(n.providerPublishTime) ? n.providerPublishTime! : 0,
         category: 'general', related: (n.relatedTickers ?? []).slice(0, 3).join(', '),
