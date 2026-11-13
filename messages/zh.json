@@ -1,0 +1,601 @@
+{
+  "Common": {
+    "notAvailable": "暂无",
+    "close": "关闭",
+    "cancel": "取消",
+    "save": "保存",
+    "loading": "加载中"
+  },
+  "Language": {
+    "label": "语言"
+  },
+  "Options": {
+    "investmentGoals": {
+      "growth": "成长",
+      "income": "收益",
+      "balanced": "均衡",
+      "conservative": "保守"
+    },
+    "riskTolerance": {
+      "low": "低",
+      "medium": "中",
+      "high": "高"
+    },
+    "industries": {
+      "technology": "科技",
+      "healthcare": "医疗健康",
+      "finance": "金融",
+      "energy": "能源",
+      "consumerGoods": "消费品"
+    },
+    "alertType": {
+      "upper": "上限",
+      "lower": "下限"
+    },
+    "condition": {
+      "greater": "高于（>）",
+      "less": "低于（<）"
+    }
+  },
+  "Password": {
+    "rules": {
+      "min8": "至少 8 个字符",
+      "upper": "至少包含 1 个大写字母",
+      "lower": "至少包含 1 个小写字母",
+      "number": "至少包含 1 个数字"
+    },
+    "required": "请输入密码",
+    "minLength": "密码至少需要 8 个字符",
+    "pattern": "密码须包含大写字母、小写字母和数字"
+  },
+  "Markets": {
+    "names": {
+      "us": "美国",
+      "in": "印度",
+      "de": "德国",
+      "ca": "加拿大",
+      "au": "澳大利亚",
+      "sa": "沙特阿拉伯",
+      "crypto": "加密货币",
+      "fx": "外汇",
+      "pl": "波兰"
+    },
+    "feed": {
+      "live": "实时",
+      "delayed": "延时",
+      "endOfDay": "收盘"
+    },
+    "groups": {
+      "financial": "金融",
+      "technology": "科技",
+      "consumer": "消费",
+      "banks": "银行",
+      "industry": "工业",
+      "finance": "金融",
+      "energy": "能源",
+      "growth": "成长",
+      "resources": "资源",
+      "consumerHealth": "消费与医疗",
+      "energyMaterials": "能源与材料",
+      "telecomConsumer": "电信与消费",
+      "majors": "主要货币",
+      "more": "更多",
+      "commodityFX": "商品货币",
+      "banksInsurance": "银行与保险",
+      "energyIndustry": "能源与工业",
+      "consumerTech": "消费与科技"
+    }
+  },
+  "WatchlistTable": {
+    "headers": {
+      "company": "公司",
+      "price": "价格",
+      "change": "涨跌幅",
+      "marketCap": "市值",
+      "action": "操作"
+    }
+  },
+  "AuthLayout": {
+    "testimonialQuote": "“对我来说，OpenStock 不只是又一个股票应用。它让每个人都能清晰了解市场、自主掌握信息，无需门槛或订阅。”",
+    "founderRole": "{org} 创始人",
+    "starAlt": "星级"
+  },
+  "AuthFields": {
+    "email": "电子邮箱",
+    "emailRequired": "请输入电子邮箱",
+    "emailInvalid": "请输入有效的邮箱地址"
+  },
+  "PreferenceFields": {
+    "country": "国家或地区",
+    "investmentGoal": "投资目标",
+    "riskTolerance": "风险承受能力",
+    "preferredIndustry": "偏好行业"
+  },
+  "SignIn": {
+    "title": "欢迎回来",
+    "subtitle": "登录以查看自选股和提醒。",
+    "passwordLabel": "密码",
+    "passwordPlaceholder": "请输入密码",
+    "forgotPassword": "忘记密码？",
+    "submit": "登录",
+    "submitting": "正在登录",
+    "noAccount": "还没有账号？",
+    "createAccount": "创建账号",
+    "failed": "登录失败",
+    "invalidCredentials": "邮箱或密码不正确。",
+    "failedGeneric": "无法登录，请重试。"
+  },
+  "SignUp": {
+    "title": "创建账号",
+    "subtitle": "免费开源，无需信用卡。",
+    "accountSection": "账号信息",
+    "fullNameLabel": "姓名",
+    "fullNamePlaceholder": "请输入姓名",
+    "fullNameRequired": "请输入姓名",
+    "passwordLabel": "密码",
+    "passwordPlaceholder": "至少 8 个字符",
+    "personalize": "个性化设置",
+    "personalizeHint": "用于定制欢迎邮件。",
+    "submit": "创建账号",
+    "submitting": "正在创建账号",
+    "haveAccount": "已有账号？",
+    "signIn": "登录",
+    "failed": "注册失败",
+    "couldNotCreate": "无法创建账号。",
+    "failedGeneric": "创建账号失败，请重试。"
+  },
+  "ForgotPassword": {
+    "title": "忘记密码？",
+    "subtitle": "输入邮箱地址，我们会向你发送密码重置链接。",
+    "submit": "发送重置链接",
+    "submitting": "正在发送",
+    "remembered": "想起密码了？",
+    "signIn": "登录",
+    "sent": "如果该邮箱已注册，重置链接将发送到你的邮箱。",
+    "unavailable": "暂时无法重置密码",
+    "unableToStart": "无法发起密码重置。"
+  },
+  "ResetPassword": {
+    "loading": "正在加载重置表单…",
+    "title": "设置新密码",
+    "subtitle": "为你的账号设置一个新密码。",
+    "newPasswordLabel": "新密码",
+    "newPasswordPlaceholder": "请输入新密码",
+    "confirmPasswordLabel": "确认密码",
+    "confirmPasswordPlaceholder": "再次输入新密码",
+    "confirmRequired": "请确认新密码",
+    "mismatch": "两次输入的密码不一致",
+    "submit": "重置密码",
+    "submitting": "正在重置密码",
+    "needFreshLink": "需要新的重置链接？",
+    "requestAnother": "重新申请",
+    "invalidLink": "重置链接无效或已过期。",
+    "updated": "密码已更新，现在可以登录。",
+    "failed": "密码重置失败",
+    "unableToReset": "无法重置密码。"
+  },
+  "SocialAuth": {
+    "signInFailed": "登录失败",
+    "connectionError": "请检查网络连接后重试。",
+    "redirecting": "正在跳转",
+    "or": "或"
+  },
+  "CountrySelect": {
+    "placeholder": "选择国家或地区…",
+    "searchPlaceholder": "搜索国家或地区…",
+    "empty": "未找到匹配的国家或地区。",
+    "required": "请选择{field}",
+    "hint": "帮助我们展示与你相关的行情和新闻。"
+  },
+  "ProfilePage": {
+    "metaTitle": "个人资料",
+    "memberSince": "注册于 {date}",
+    "statWatching": "自选股",
+    "statActiveAlerts": "生效提醒",
+    "statPausedAlerts": "暂停提醒",
+    "statSignInMethods": "登录方式",
+    "detailsTitle": "个人信息",
+    "detailsSub": "设置姓名和欢迎邮件的个性化偏好",
+    "signInMethodsTitle": "登录方式",
+    "signInMethodsSub": "可用于登录此账号的方式",
+    "methodCredential": "邮箱与密码",
+    "connected": "已关联",
+    "passwordTitle": "密码",
+    "passwordSub": "修改密码后，其他设备将退出登录"
+  },
+  "ProfileForm": {
+    "nameLabel": "姓名",
+    "namePlaceholder": "请输入姓名",
+    "nameRequired": "请输入姓名",
+    "nameMinLength": "至少 2 个字符",
+    "saveFailed": "保存失败",
+    "saved": "个人资料已保存",
+    "submit": "保存修改",
+    "submitting": "正在保存",
+    "upToDate": "已是最新"
+  },
+  "PasswordForm": {
+    "currentLabel": "当前密码",
+    "currentPlaceholder": "输入当前密码",
+    "currentRequired": "请输入当前密码",
+    "newLabel": "新密码",
+    "newPlaceholder": "至少 8 个字符",
+    "notChanged": "密码未修改",
+    "changed": "密码已修改",
+    "otherDevicesSignedOut": "其他设备已退出登录。",
+    "submit": "修改密码",
+    "submitting": "正在修改"
+  },
+  "Dashboard": {
+    "title": "市场概览",
+    "sub": "{market} · {status, select, open {交易中} other {已休市}} · {feed, select, live {实时数据} delayed {延时数据} other {收盘数据}}",
+    "pulseTitle": "指数行情",
+    "pulseSubFinnhub": "共享行情由 Finnhub 提供",
+    "pulseSubYahoo": "延时行情由 Yahoo Finance 提供",
+    "pulseSubTradingView": "{feed, select, live {实时行情由 TradingView 提供} delayed {延时行情由 TradingView 提供} other {收盘行情由 TradingView 提供}}",
+    "moversTitle": "涨跌排行",
+    "moversSub": "今日主要涨跌",
+    "leadersTitle": "领涨公司",
+    "leadersSub": "各行业近 12 个月走势",
+    "stockHeatmapTitle": "标普 500 热力图",
+    "cryptoHeatmapTitle": "加密货币热力图",
+    "heatmapSub": "面积代表市值，颜色代表当日涨跌",
+    "quotesTitle": "行情报价",
+    "quotesSub": "{market}各行业主要公司",
+    "storiesTitle": "市场要闻",
+    "storiesSub": "按最新时间排序"
+  },
+  "MarketSwitcher": {
+    "label": "市场",
+    "openNow": "交易中",
+    "closedNow": "已休市"
+  },
+  "PulseTile": {
+    "vsPrevClose": "较昨收 {change}",
+    "unavailable": "暂无报价"
+  },
+  "DataFreshness": {
+    "live": "实时 · 每 15 秒更新",
+    "asOf": "截至 {time} · 每小时更新",
+    "delayed": "延时行情 · 每小时更新"
+  },
+  "YahooQuotes": {
+    "changePercent": "涨跌幅",
+    "unavailable": "暂时无法获取行情。",
+    "source": "价格单位：{currency}，数据由 Yahoo Finance 提供，约延时 15 分钟。",
+    "sourceNoCurrency": "数据由 Yahoo Finance 提供，约延时 15 分钟。"
+  },
+  "TradingViewWidget": {
+    "fullScreen": "全屏",
+    "exitFullScreen": "退出全屏",
+    "exitFullScreenHint": "退出全屏（Esc）"
+  },
+  "Errors": {
+    "signUpFailed": "注册失败",
+    "signInFailed": "登录失败",
+    "signOutFailed": "退出登录失败",
+    "tooManyAttempts": "操作过于频繁，请稍等几分钟后重试。",
+    "socialSignInUnavailable": "暂时无法使用 {provider} 登录。",
+    "resetEmailNotConfigured": "尚未配置密码重置邮件。",
+    "resetBaseUrlMissing": "发送密码重置邮件前，请先配置 BETTER_AUTH_URL。",
+    "resetEmailFailed": "无法发送密码重置邮件。",
+    "resetLinkInvalid": "重置链接无效或已过期。",
+    "nameLength": "姓名长度须为 2 至 80 个字符。",
+    "pickCountry": "请选择国家或地区。",
+    "pickEachOption": "请为每组选项选择一项。",
+    "profileSaveFailed": "无法保存个人资料。",
+    "passwordChangeFailed": "当前密码不正确，或新密码长度不足。",
+    "watchlistFull": "自选股已满（最多 {max} 只），请移除一只后再添加。",
+    "listNotFound": "该列表已不存在。",
+    "listNameInvalid": "请输入不超过 60 个字符的列表名称。",
+    "listLimit": "最多可保留 {max} 个列表，请删除一个后再创建。",
+    "listExists": "已存在名为“{name}”的列表。",
+    "symbolInvalid": "无法查询此股票代码。",
+    "listFull": "每个列表最多可添加 {max} 个代码。"
+  },
+  "NewsSources": {
+    "companyNews": "公司新闻",
+    "marketNews": "市场新闻"
+  },
+  "Emails": {
+    "common": {
+      "logoAlt": "OpenStock 标志",
+      "unsubscribe": "取消订阅",
+      "visitOpenstock": "访问 OpenStock"
+    },
+    "welcome": {
+      "subject": "欢迎使用 OpenStock —— 你的开源股票市场工具！",
+      "text": "感谢加入 Open Dev Society 发起的 OpenStock 项目",
+      "title": "欢迎使用 OpenStock",
+      "dashboardAlt": "OpenStock 工作台预览",
+      "heading": "欢迎加入，{name}",
+      "fallbackIntro": "感谢加入 OpenStock。现在，你可以使用这些工具跟踪市场，作出更有依据的判断。",
+      "featuresLabel": "现在你可以：",
+      "featureWatchlist": "创建自选股列表，关注你感兴趣的股票",
+      "featureSearch": "使用 ⌘K 搜索股票，并在新标签页打开",
+      "featureDashboard": "浏览工作台，了解市场趋势和最新新闻",
+      "closing": "我们将提供及时的更新、市场信息和提醒，帮助你专注于自己的投资判断。",
+      "cta": "打开工作台",
+      "initiative": "由 Open Dev Society 发起"
+    },
+    "resetPassword": {
+      "subject": "重置 OpenStock 密码",
+      "heading": "重置密码",
+      "greeting": "你好，{name}：",
+      "greetingNoName": "你好：",
+      "body": "我们收到了重置 OpenStock 密码的请求。请点击下方按钮设置新密码。",
+      "cta": "重置密码",
+      "ignore": "如果你没有发起此请求，可以忽略这封邮件。",
+      "text": "重置密码：{url}"
+    },
+    "stockAlert": {
+      "subjectAbove": "🔔 价格提醒：{symbol} 已高于 {target}",
+      "subjectBelow": "🔔 价格提醒：{symbol} 已低于 {target}",
+      "textAbove": "{symbol} 当前价格为 {price}，已高于目标价 {target}。",
+      "textBelow": "{symbol} 当前价格为 {price}，已低于目标价 {target}。",
+      "titleAbove": "价格提醒：{symbol} 已达到上限目标价",
+      "titleBelow": "价格提醒：{symbol} 已达到下限目标价",
+      "headingAbove": "📈 已突破价格上限",
+      "headingBelow": "📉 已跌破价格下限",
+      "currentPrice": "当前价格",
+      "details": "提醒详情",
+      "targetPriceLabel": "目标价格：",
+      "triggerLabel": "触发条件：",
+      "triggerAbove": "价格已超过你设置的上限 {target}",
+      "triggerBelow": "价格已跌破你设置的下限 {target}",
+      "calloutTitleAbove": "已达到目标价",
+      "calloutBodyAbove": "{symbol} 已达到你设置的目标价格，可以结合持仓情况重新评估策略。",
+      "calloutTitleBelow": "价格下跌提醒",
+      "calloutBodyBelow": "{symbol} 已跌破你设置的目标价格，请结合风险偏好评估下一步操作。",
+      "cta": "查看工作台",
+      "footer": "你收到此邮件，是因为订阅了 OpenStock 的消息更新。"
+    }
+  },
+  "Sidebar": {
+    "homeAria": "OpenStock 工作台",
+    "searchStocks": "搜索股票",
+    "overview": "市场概览",
+    "watchlist": "自选股",
+    "watching": "正在关注",
+    "watchingEmpty": "收藏股票后，即可在这里快速查看。",
+    "resources": {
+      "help": "使用帮助",
+      "apiDocs": "API 文档",
+      "about": "关于项目",
+      "terms": "使用条款"
+    },
+    "support": "支持 OpenStock",
+    "sponsor": "赞助商",
+    "sponsorSlotsOpen": "赞助席位开放中",
+    "sponsorSlotsLeft": "还剩 {count} 个赞助席位",
+    "sponsorPitch": "让每一位 OpenStock 用户了解你的公司。",
+    "signOut": "退出登录"
+  },
+  "TabBar": {
+    "pages": {
+      "overview": "市场概览",
+      "watchlist": "自选股",
+      "profile": "个人资料"
+    },
+    "openMenu": "打开菜单",
+    "closeTab": "关闭{label}",
+    "openStock": "打开股票",
+    "openStockHint": "打开股票（⌘K）"
+  },
+  "SearchCommand": {
+    "dialogTitle": "快捷搜索",
+    "dialogDescription": "搜索股票或操作…",
+    "placeholder": "按公司名称或股票代码搜索",
+    "searching": "正在搜索",
+    "noMatch": "没有找到与“{query}”匹配的结果",
+    "noStocks": "暂无可用股票",
+    "results": "搜索结果",
+    "popular": "热门股票",
+    "listPlaceholder": "向“{list}”添加股票",
+    "addingTo": "正在添加到 <name>{list}</name>",
+    "addedToList": "已将 {symbol} 添加到“{list}”",
+    "addFailed": "无法添加该股票代码",
+    "addTitle": "将 {symbol} 添加到 {list}",
+    "add": "添加",
+    "adding": "正在添加"
+  },
+  "UpdateBanner": {
+    "new": "更新",
+    "seeWhatsNew": "查看更新",
+    "fullChangelog": "查看完整更新日志"
+  },
+  "DonatePopup": {
+    "kicker": "赞助席位开放中",
+    "title": "让 OpenStock 保持免费",
+    "description": "感谢你对 OpenStock 和 Open Dev Society 的支持。随着用户增长，我们已接近 Vercel 免费额度上限。你可以每月赞助 5 美元起，也可以一次性捐赠，或联系我们洽谈合作。",
+    "becomeSponsor": "成为赞助商",
+    "maybeLater": "稍后再说"
+  },
+  "OpenDevSocietyBranding": {
+    "initiativeBy": "项目发起方"
+  },
+  "StockPage": {
+    "sentimentTitle": "市场情绪",
+    "sentimentSub": "Reddit、X.com、新闻和 Polymarket",
+    "dividendYieldTitle": "股息率",
+    "chartTitle": "走势图",
+    "chartUnavailableSub": "该交易所图表仅能在 TradingView 查看",
+    "chartUnavailableTitle": "此处暂不提供走势图",
+    "chartUnavailableBody": "TradingView 未授权其他网站嵌入 {exchange} 图表。下方财务数据、技术指标和公司资料仍可使用。",
+    "openOnTradingView": "在 TradingView 查看图表",
+    "financialsTitle": "财务数据",
+    "financialsSub": "利润表、资产负债表和财务比率",
+    "technicalsTitle": "技术分析",
+    "technicalsSub": "震荡指标和移动平均线 · 1 小时",
+    "profileTitle": "公司资料",
+    "profileSub": "公司业务简介"
+  },
+  "StockHeader": {
+    "quoteViaYahoo": "延时行情由 Yahoo Finance 提供",
+    "quoteViaTradingView": "行情由 TradingView 提供",
+    "alertsHint": "价格提醒需要可每 5 分钟检查一次的行情来源",
+    "alertsScope": "提醒支持美股和加密货币",
+    "setAlert": "设置提醒",
+    "open": "开盘价",
+    "openHint": "本交易时段的第一笔成交价",
+    "dayRange": "日内区间",
+    "dayRangeHint": "最低价至最高价",
+    "prevClose": "昨收价",
+    "prevCloseHint": "上一交易时段收盘价",
+    "marketCap": "市值"
+  },
+  "StockChart": {
+    "title": "走势图",
+    "sub": "由 TradingView 提供 · 可在图表中切换周期和样式",
+    "indicatorsButton": "技术指标",
+    "keptNote": "在此浏览器的所有图表中保留设置",
+    "indicators": {
+      "sma": "简单移动平均线（SMA）",
+      "ema": "指数移动平均线（EMA）",
+      "bollingerBands": "布林带",
+      "vwap": "成交量加权均价（VWAP）",
+      "rsi": "相对强弱指标（RSI）",
+      "macd": "指数平滑异同移动平均线（MACD）",
+      "stochastic": "随机指标",
+      "atr": "平均真实波幅（ATR）"
+    }
+  },
+  "StockSentiment": {
+    "avgBuzz": "平均热度",
+    "bullishAvg": "平均看涨比例",
+    "coverage": "来源覆盖",
+    "coverageValue": "{count}/{total} 个来源",
+    "sourceAlignment": "来源一致性：<value>{alignment}</value>",
+    "alignment": {
+      "noSentimentMix": "暂无综合情绪",
+      "singleSourceView": "仅有单一来源",
+      "bullishAlignment": "一致看涨",
+      "bearishAlignment": "一致看跌",
+      "tightAlignment": "高度一致",
+      "wideDivergence": "分歧明显",
+      "mixed": "多空混合"
+    },
+    "metric": {
+      "mentions": "提及 {value} 次",
+      "trades": "交易 {value} 笔"
+    },
+    "newsSource": "新闻",
+    "buzz": "热度",
+    "bullPct": "{pct}% 看涨",
+    "trend": {
+      "rising": "上升",
+      "falling": "下降",
+      "stable": "稳定"
+    },
+    "noTrend": "暂无趋势"
+  },
+  "WatchlistButton": {
+    "added": "已将 {symbol} 加入自选股",
+    "removed": "已将 {symbol} 移出自选股",
+    "updateFailed": "无法更新自选股",
+    "addLabel": "将 {symbol} 加入自选股",
+    "removeLabel": "将 {symbol} 移出自选股",
+    "watch": "加入自选",
+    "watching": "已关注"
+  },
+  "WatchlistPage": {
+    "title": "自选股",
+    "symbolCount": "{count} 个代码",
+    "addSymbol": "添加股票",
+    "symbolsTitle": "股票列表",
+    "symbolsSub": "点击任意行查看走势图、技术指标和财务数据",
+    "newsTitle": "相关新闻",
+    "newsSubWatched": "你关注股票的最新新闻",
+    "newsSubGeneral": "市场综合新闻",
+    "alertsTitle": "价格提醒",
+    "alertsSubActive": "{count} 个生效中 · 每 5 分钟检查",
+    "alertsSubCloud": "OpenStock Cloud 功能",
+    "listsTitle": "我的分组",
+    "listsSub": "将关注的股票整理到不同分组"
+  },
+  "WatchlistTableRow": {
+    "today": "今日",
+    "emptyTitle": "暂无自选股",
+    "emptyBody": "搜索公司并点击收藏，即可在这里跟踪价格并设置提醒。",
+    "searchStocks": "搜索股票",
+    "setAlertLabel": "为 {symbol} 设置价格提醒",
+    "alertsUnavailable": "价格提醒支持美股和加密货币"
+  },
+  "AlertsPanel": {
+    "status": {
+      "triggered": "已触发",
+      "paused": "已暂停",
+      "expired": "已过期",
+      "watching": "监测中"
+    },
+    "removed": "已移除 {symbol} 的提醒",
+    "removeFailed": "无法移除提醒",
+    "cloudTitle": "Cloud 提供价格提醒",
+    "cloudBody": "邮件价格提醒属于 OpenStock Cloud，订阅价格为每月 5 美元，即将上线。",
+    "seeCloud": "了解 OpenStock Cloud",
+    "emptyTitle": "暂无提醒",
+    "emptyBody": "点击列表中的铃铛，或在股票页面选择“设置提醒”，触发时我们会发送邮件。",
+    "movedNotice": "价格提醒已迁移至 <link>OpenStock Cloud</link>，现有提醒已暂停。",
+    "above": "高于 {price}",
+    "below": "低于 {price}",
+    "until": "有效期至 {date}",
+    "removeTitle": "移除提醒",
+    "removeLabel": "移除 {symbol} 的提醒"
+  },
+  "CreateAlertModal": {
+    "risesAbove": "上涨至",
+    "fallsBelow": "下跌至",
+    "created": "提醒已设置：{symbol} {condition, select, ABOVE {高于} other {低于}} {price}",
+    "createFailed": "无法创建提醒",
+    "kicker": "价格提醒",
+    "description": "价格突破目标时将发送邮件。每 5 分钟检查一次，90 天后过期。",
+    "conditionLabel": "触发条件",
+    "targetPrice": "目标价格",
+    "priceUnavailable": "暂无当前价格",
+    "alreadyMet": "当前已{condition, select, ABOVE {高于} other {低于}}目标价，下次检查时将触发",
+    "now": "当前价格 {price}",
+    "nowWithDistance": "当前价格 {price} · 距目标 {distance}%",
+    "setting": "正在设置提醒",
+    "setAlert": "设置提醒",
+    "cloudTitle": "Cloud 提供价格提醒",
+    "cloudBody": "Cloud 提供邮件价格提醒和实时行情，每月 5 美元，即将上线。自行部署现在即可使用这两项功能。",
+    "seeCloud": "了解 OpenStock Cloud",
+    "selfHost": "自行部署"
+  },
+  "NewsList": {
+    "emptyTitle": "暂无近期新闻",
+    "emptyBody": "最近几天暂无这些股票的新闻。"
+  },
+  "NamedLists": {
+    "starred": "已收藏",
+    "addStock": "添加股票",
+    "addStockTo": "向 {list} 添加股票",
+    "newListName": "新分组名称",
+    "create": "创建",
+    "createTitle": "创建分组",
+    "createFailed": "无法创建分组",
+    "delete": "删除",
+    "deleteTitle": "删除 {list}",
+    "deleteConfirm": "确定删除分组“{list}”吗？已收藏的股票不会受到影响。",
+    "deleteFailed": "无法删除分组",
+    "emptyTitle": "“{list}”暂无股票",
+    "emptyBody": "使用上方“添加股票”，或点击自选股列表中任意一行的分组按钮。",
+    "removeFrom": "将 {symbol} 移出 {list}",
+    "removedFrom": "已将 {symbol} 移出“{list}”",
+    "removeFailed": "无法移除该股票代码",
+    "menuTitle": "将 {symbol} 添加到分组",
+    "menuLabel": "将 {symbol} 添加到自定义分组",
+    "menuHeading": "添加到分组",
+    "menuEmpty": "暂无分组，可以在下方创建。",
+    "newListItem": "新建分组…",
+    "newListTitle": "新建分组",
+    "listName": "分组名称",
+    "addedTo": "已将 {symbol} 添加到“{list}”",
+    "addFailed": "无法添加该股票代码",
+    "addToFailed": "无法将 {symbol} 添加到“{list}”",
+    "createdAndAdded": "已创建“{list}”并添加 {symbol}",
+    "retryHint": "已创建“{list}”，请再次点击按钮重试添加 {symbol}。",
+    "retryAdd": "重试添加",
+    "createAndAdd": "创建并添加"
+  }
+}
