@@ -14,7 +14,7 @@ type PulseTileProps = { symbol: string; label: string; initial: LiveQuote | null
 type PulseTileLabels = { vsPrevClose: (change: string) => string; unavailable: string };
 
 // English for the marketing preview, which renders outside NextIntlClientProvider
-const ENGLISH: PulseTileLabels = { vsPrevClose: (change) => `${change} vs prev close`, unavailable: 'Quote unavailable' };
+const ENGLISH: PulseTileLabels = { vsPrevClose: (change) => `较昨收 ${change}`, unavailable: '暂无报价' };
 
 // A pulse tile priced from our own quote cache. In realtime mode it refreshes on screen,
 // so the "Live · 15s" label is true; in cached mode it shows the server-rendered quote.
