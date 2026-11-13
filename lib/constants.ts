@@ -47,7 +47,7 @@ export const CONDITION_OPTIONS = [
 // TradingView widgets, built per market from lib/markets.ts groups. `locale` is the widget UI language
 // (TradingView ships "pl"); callers outside the translated app keep the English default.
 // TradingView spells Arabic "ar_AE"; English and Polish are the same code as ours.
-const tvLocale = (locale: Locale) => (locale === 'ar' ? 'ar_AE' : locale);
+const tvLocale = (locale: Locale) => (locale === 'ar' ? 'ar_AE' : locale === 'zh' ? 'zh_CN' : locale);
 
 type SymbolGroup = { title: string; symbols: [symbol: string, name: string][] };
 
