@@ -53,7 +53,7 @@ export default function AlertsPanel({ alerts }: { alerts: AlertRow[] }) {
                 <span className="empty-icon"><BellRing className="size-5" /></span>
                 <h3>{t('cloudTitle')}</h3>
                 <p className="max-w-64 text-[13px]">{t('cloudBody')}</p>
-                <Link href="/#data" className="btn btn-ghost mt-2">{t('seeCloud')}</Link>
+                <Link href="/help" className="btn btn-ghost mt-2">{t('seeCloud')}</Link>
             </div>
         );
     }
@@ -75,7 +75,7 @@ export default function AlertsPanel({ alerts }: { alerts: AlertRow[] }) {
             {!alertsEnabled && (
                 <p className="px-3 pt-3 pb-1 text-[12.5px] text-faint">
                     {t.rich('movedNotice', {
-                        link: (chunks) => <Link href="/#data" className="text-brand-ink hover:underline">{chunks}</Link>,
+                        link: (chunks) => <Link href="/help" className="text-brand-ink hover:underline">{chunks}</Link>,
                     })}
                 </p>
             )}
