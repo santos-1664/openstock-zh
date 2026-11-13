@@ -11,7 +11,7 @@ import { symbolInfoConfig } from "@/lib/constants";
 import TradingViewWidget from "@/components/TradingViewWidget";
 import ChangePill from "@/components/ChangePill";
 import { getYahooDailyQuotes } from "@/lib/actions/yahoo.actions";
-import { isYahooSymbol } from "@/lib/yahoo";
+import { isYahooSymbol, normalizeYahooQuoteSymbol } from "@/lib/yahoo";
 
 // Symbols Finnhub's free plan can't price (most non-US listings) use TradingView's quote panel instead.
 // TradingView blocks Tadawul quotes in embeds and has Warsaw only end of day, so those show a delayed Yahoo price
@@ -60,7 +60,7 @@ async function TradingViewHeader({ symbol }: { symbol: string }) {
 }
 
 export default async function StockHeader({ symbol }: { symbol: string }) {
-    if (!hasFinnhubQuotes(symbol)) return <TradingViewHeader symbol={symbol} />;
+    if (!hasFinnhubQuotes(symbol) && (!normalizeYahooQuoteSymbol(symbol) || symbol.includes(':'))) return <TradingViewHeader symbol={symbol} />;
 
     const [isInWatchlist, quotes, profile, t] = await Promise.all([
         isStockInWatchlist(symbol),
