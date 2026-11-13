@@ -9,7 +9,6 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { searchStocks } from "@/lib/actions/finnhub.actions";
 import { addSymbolToList } from "@/lib/actions/watchlist-lists.actions";
-import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
 
 const OPEN_SEARCH_EVENT = 'open-search';
@@ -39,6 +38,8 @@ export default function SearchCommand({ initialStocks }: { initialStocks: StockW
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("")
     const [loading, setLoading] = useState(false)
+    const [searchFailed, setSearchFailed] = useState(false);
+    const [attempt, setAttempt] = useState(0);
     const [stocks, setStocks] = useState<StockWithWatchlistStatus[]>(initialStocks);
     // Set only when a named list asked for the palette, so the default behaviour is untouched.
     const [listTarget, setListTarget] = useState<ListTarget | null>(null);
@@ -73,25 +74,29 @@ export default function SearchCommand({ initialStocks }: { initialStocks: StockW
         }
     }, [])
 
-    const handleSearch = async () => {
-        if(!isSearchMode) return setStocks(initialStocks);
-
-        setLoading(true)
-        try {
-            const results = await searchStocks(searchTerm.trim());
-            setStocks(results);
-        } catch {
-            setStocks([])
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const debouncedSearch = useDebounce(handleSearch, 300);
-
     useEffect(() => {
-        debouncedSearch();
-    }, [debouncedSearch, searchTerm]);
+        if (!open) return;
+        const term = searchTerm.trim();
+        setSearchFailed(false);
+        if (!term) {
+            setStocks(initialStocks);
+            setLoading(false);
+            return;
+        }
+        let cancelled = false;
+        setLoading(true);
+        const timer = setTimeout(async () => {
+            try {
+                const results = await searchStocks(term);
+                if (!cancelled) setStocks(results);
+            } catch {
+                if (!cancelled) { setStocks([]); setSearchFailed(true); }
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        }, 300);
+        return () => { cancelled = true; clearTimeout(timer); };
+    }, [searchTerm, initialStocks, open, attempt]);
 
     const handleSelectStock = () => {
         setOpen(false);
@@ -143,6 +148,11 @@ export default function SearchCommand({ initialStocks }: { initialStocks: StockW
             <CommandList className="search-list">
                 {loading ? (
                     <CommandEmpty className="search-list-empty">{t('searching')}</CommandEmpty>
+                ) : searchFailed ? (
+                    <div className="search-list-indicator" role="alert">
+                        <p>{t('loadFailed')}</p>
+                        <button type="button" className="btn btn-ghost mt-3" onClick={() => setAttempt((n) => n + 1)}>{t('retry')}</button>
+                    </div>
                 ) : displayStocks?.length === 0 ? (
                     <div className="search-list-indicator">
                         {isSearchMode ? t('noMatch', { query: searchTerm.trim() }) : t('noStocks')}
