@@ -3,7 +3,6 @@ import { CandlestickChart } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import TradingViewWidget from "@/components/TradingViewWidget";
 import StockHeader, { StockHeaderSkeleton } from "@/components/stocks/StockHeader";
-import StockSentimentCard from "@/components/stocks/StockSentimentCard";
 import StockChart from "@/components/stocks/StockChart";
 import Panel from "@/components/Panel";
 import {
@@ -11,27 +10,17 @@ import {
     COMPANY_PROFILE_WIDGET_CONFIG,
     COMPANY_FINANCIALS_WIDGET_CONFIG,
 } from "@/lib/constants";
-import { getStockSentimentInsights } from '@/lib/actions/adanos.actions';
 import { getStockMetrics } from '@/lib/actions/finnhub.actions';
 import { hasFinnhubCompanyData } from '@/lib/markets';
 import { formatSymbolForTradingView, isChartEmbeddable, tradingViewSymbolUrl } from '@/lib/utils';
 
 const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
 
-async function Sentiment({ symbol }: { symbol: string }) {
-    const [insight, t] = await Promise.all([getStockSentimentInsights(symbol), getTranslations('StockPage')]);
-    if (!insight) return null;
-    return (
-        <Panel title={t('sentimentTitle')} sub={t('sentimentSub')}>
-            <StockSentimentCard insight={insight} />
-        </Panel>
-    );
-}
-
 async function DividendYield({ symbol }: { symbol: string }) {
     // Outside the US we can't tell "no dividend" from "no data", so show nothing rather than a misleading dash
     if (!hasFinnhubCompanyData(symbol)) return null;
     const [dividendYield, t] = await Promise.all([getStockMetrics(symbol), getTranslations('StockPage')]);
+    if (dividendYield === null) return null;
     return (
         <Panel title={t('dividendYieldTitle')}>
             <p className="text-2xl font-semibold text-white">
@@ -92,9 +81,6 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
                     </Panel>
                     <Suspense fallback={null}>
                         <DividendYield symbol={symbol} />
-                    </Suspense>
-                    <Suspense fallback={null}>
-                        <Sentiment symbol={symbol} />
                     </Suspense>
                     <Panel title={t('profileTitle')} sub={t('profileSub')}>
                         <TradingViewWidget
