@@ -6,8 +6,8 @@ import { MAINTAINER, RELEASES, type Credit } from "@/lib/changelog";
 import { cn } from "@/lib/utils";
 
 export const metadata = {
-    title: 'Changelog',
-    description: 'Everything that changed in OpenStock, release by release, since it started in September 2025.',
+    title: "更新日志",
+    description: "从 2025 年 9 月项目启动至今，按版本记录 OpenStock 的每一次更新。",
 };
 
 // "#123" in an item becomes a link to that pull request
@@ -53,12 +53,12 @@ export default function ChangelogPage() {
     return (
         <>
             <PageHero
-                kicker="Changelog"
-                title="Everything that changed in OpenStock."
-                sub="Every release since we started in September 2025, in plain words. Each change links to its pull request on GitHub."
+                kicker="更新日志"
+                title="OpenStock 更新记录。"
+                sub="从 2025 年 9 月开始，记录每个版本的变化，每项更新均附有 GitHub 合并请求链接。"
             >
-                <Link href="/dashboard" className="btn btn-primary h-11 px-5 text-[15px]">Open dashboard</Link>
-                <a href="#contributors" className="btn btn-ghost h-11 px-5 text-[15px]">Meet the {CONTRIBUTORS.length} contributors</a>
+                <Link href="/dashboard" className="btn btn-primary h-11 px-5 text-[15px]">打开工作台</Link>
+                <a href="#contributors" className="btn btn-ghost h-11 px-5 text-[15px]">认识项目的{CONTRIBUTORS.length} 贡献者</a>
             </PageHero>
 
             <ol className="mx-auto mt-16 max-w-[1200px] px-5">
@@ -69,7 +69,7 @@ export default function ChangelogPage() {
                         <li key={release.id} className="grid gap-3 md:grid-cols-[150px_minmax(0,1fr)] md:gap-8">
                             <div className="md:sticky md:top-24 md:self-start md:pt-0.5 md:text-right">
                                 <p className="kicker text-foreground">{release.date}</p>
-                                {latest && <span className="pill is-brand mt-2">Latest</span>}
+                                {latest && <span className="pill is-brand mt-2">最新版本</span>}
                             </div>
 
                             {/* The timeline: a line down the left of each release, with a dot at its title */}
@@ -101,7 +101,7 @@ export default function ChangelogPage() {
                                 </div>
 
                                 <div className="mt-4 flex flex-wrap items-center gap-2">
-                                    <span className="kicker mr-1">Thanks to</span>
+                                    <span className="kicker mr-1">感谢</span>
                                     {release.credits.map((credit) => (
                                         <a
                                             key={credit.login}
@@ -123,11 +123,11 @@ export default function ChangelogPage() {
                 })}
             </ol>
 
-            <section id="contributors" className="mx-auto mt-24 max-w-[1200px] scroll-mt-24 px-5">
+            <section id="贡献者" className="mx-auto mt-24 max-w-[1200px] scroll-mt-24 px-5">
                 <SectionHead
-                    kicker="Contributors"
+                    kicker="贡献者"
                     title={`Built by ${CONTRIBUTORS.length} people.`}
-                    sub="Everyone whose pull request or issue shaped a release above. Thank you: this is your work."
+                    sub="感谢通过代码贡献或问题反馈推动这些版本的每一位朋友，这些成果属于你们。"
                 />
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {CONTRIBUTORS.map((person) => (
@@ -137,7 +137,7 @@ export default function ChangelogPage() {
                                 <div className="min-w-0">
                                     <p className="flex items-center gap-2 font-semibold">
                                         <span className="truncate">{person.login}</span>
-                                        {person.login === MAINTAINER && <span className="pill is-brand shrink-0">Maintainer</span>}
+                                        {person.login === MAINTAINER && <span className="pill is-brand shrink-0">维护者</span>}
                                     </p>
                                     <p className="text-[13px] text-faint">{creditLabel(person)}</p>
                                 </div>
@@ -146,10 +146,9 @@ export default function ChangelogPage() {
                     ))}
                 </div>
                 <p className="mt-6 text-[14px] text-faint">
-                    Want to be here? Pick a{' '}
-                    <a href={GOOD_FIRST_ISSUES_URL} target="_blank" rel="noreferrer" className="font-semibold text-brand-ink hover:underline">good first issue</a>
-                    {' '}or report a bug you hit.
-                </p>
+                    想参与贡献？可以从一个{' '}
+                    <a href={GOOD_FIRST_ISSUES_URL} target="_blank" rel="noreferrer" className="font-semibold text-brand-ink hover:underline">适合新手的问题</a>
+                    {' '}开始，或反馈你遇到的问题。</p>
             </section>
         </>
     );
