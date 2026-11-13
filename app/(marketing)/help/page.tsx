@@ -6,56 +6,53 @@ import IconCard from '@/components/marketing/IconCard';
 import { DISCORD_URL, REPO_URL } from '@/lib/constants';
 
 export const metadata: Metadata = {
-    title: 'Help | OpenStock',
-    description: 'Community-driven support for OpenStock. No paywalls, just help.',
+    title: "使用帮助 | OpenStock",
+    description: "由社区提供 OpenStock 使用支持，无需付费。",
 };
 
 const FAQS = [
     {
-        question: 'Is OpenStock really free?',
-        answer: 'Yes. We run on sponsors and community contributions. Charts, watchlists and research stay free. OpenStock Cloud, coming soon, adds live quotes and email price alerts for $5 a month. Self-hosting includes both.',
+        question: "OpenStock 真的免费吗？",
+        answer: "是的。项目依靠赞助和社区贡献运作，图表、自选股和研究工具保持免费。即将上线的 OpenStock Cloud 每月 5 美元，提供实时行情与邮件价格提醒；自行部署也包含这两项功能。",
     },
     {
-        question: 'How do I add a stock to my watchlist?',
-        answer: 'Press ⌘K (or Search stocks in the sidebar), open the company, then press Watch. It shows up in your watchlist and in the sidebar.',
+        question: "如何添加自选股？",
+        answer: "按 ⌘K 或点击侧边栏“搜索股票”，打开公司页面后点击“加入自选”，即可在自选股列表和侧边栏查看。",
     },
     {
-        question: 'Where does the market data come from?',
-        answer: 'Charts come live from TradingView. Quotes, watchlist prices and alerts come from Finnhub; on this site they refresh hourly and every price shows when it was last traded.',
+        question: "行情数据来自哪里？",
+        answer: "图表由 TradingView 实时提供。报价、自选股价格和提醒使用 Finnhub 数据，本站每小时刷新一次，每个价格均注明最近成交时间。",
     },
     {
-        question: 'Which markets are supported?',
-        answer: 'US stocks, crypto and forex live; Canada and Australia delayed; Saudi Arabia and Poland delayed through Yahoo Finance; India (through BSE) and Germany end of day. Alerts work for US stocks and crypto.',
+        question: "支持哪些市场？",
+        answer: "支持美股、加密货币和外汇实时行情；加拿大和澳大利亚延时行情；沙特阿拉伯和波兰由 Yahoo Finance 提供延时行情；印度（BSE）和德国提供收盘数据。价格提醒支持美股和加密货币。",
     },
     {
-        question: 'My alert hasn’t fired.',
-        answer: 'Price alerts are part of OpenStock Cloud (or a self-hosted instance in realtime mode). There they are checked every five minutes and emailed to your account address when the price crosses your target. Check the alert’s status on the watchlist page.',
+        question: "为什么价格提醒没有触发？",
+        answer: "价格提醒属于 OpenStock Cloud，也可在自行部署的实时模式中使用。系统每五分钟检查一次，价格突破目标时发送邮件。请在自选股页面检查提醒状态。",
     },
     {
-        question: 'Can I contribute code or designs?',
-        answer: 'Absolutely. Issues labelled “good first issue” are a good start. We welcome designers, developers and writers alike.',
+        question: "我可以贡献代码或设计吗？",
+        answer: "当然可以。带有“good first issue”标签的问题适合入门，我们欢迎设计师、开发者和文档作者参与。",
     },
 ];
 
 export default function HelpPage() {
     return (
         <>
-            <PageHero kicker="Help" title="How can we help?" sub="Community-powered support for everyone." />
+            <PageHero kicker="使用帮助" title="需要什么帮助？" sub="面向所有人的社区支持。" />
 
             <section className="mx-auto mt-14 grid max-w-[1200px] gap-3 px-5 md:grid-cols-3">
-                <IconCard icon={BookOpen} title="How it works" footer={<a href="/api-docs" className="btn btn-ghost w-full">Read the architecture</a>}>
-                    Data sources, background jobs and the AI behind the emails.
-                </IconCard>
-                <IconCard icon={MessageCircle} title="Community chat" footer={<a href={DISCORD_URL} target="_blank" rel="noreferrer" className="btn btn-ghost w-full">Join Discord</a>}>
-                    Get answers from other users and the maintainers.
-                </IconCard>
-                <IconCard icon={Github} title="Report a bug" footer={<a href={`${REPO_URL}/issues`} target="_blank" rel="noreferrer" className="btn btn-ghost w-full">Open an issue</a>}>
-                    Found something broken? Tell us on GitHub.
-                </IconCard>
+                <IconCard icon={BookOpen} title="工作原理" footer={<a href="/api-docs" className="btn btn-ghost w-full">了解技术架构</a>}>
+                    了解数据来源、后台任务和邮件生成使用的 AI。</IconCard>
+                <IconCard icon={MessageCircle} title="社区交流" footer={<a href={DISCORD_URL} target="_blank" rel="noreferrer" className="btn btn-ghost w-full">加入 Discord</a>}>
+                    向其他用户与项目维护者寻求帮助。</IconCard>
+                <IconCard icon={Github} title="反馈问题" footer={<a href={`${REPO_URL}/issues`} target="_blank" rel="noreferrer" className="btn btn-ghost w-full">提交问题</a>}>
+                    发现功能异常？请在 GitHub 反馈。</IconCard>
             </section>
 
             <section className="mx-auto mt-24 max-w-[1200px] px-5">
-                <SectionHead kicker="FAQ" title="Common questions." />
+                <SectionHead kicker="FAQ" title="常见问题。" />
                 <div className="hatch">
                     <div className="card row-list overflow-hidden">
                         {FAQS.map(({ question, answer }) => (
@@ -76,10 +73,10 @@ export default function HelpPage() {
                 <div className="hatch">
                     <div className="card flex flex-col items-start justify-between gap-5 p-8 md:flex-row md:items-center">
                         <div>
-                            <h2 className="text-[22px] font-bold tracking-[-0.03em]">Still stuck?</h2>
-                            <p className="mt-1 text-muted-foreground">Our team and community answer emails, for free.</p>
+                            <h2 className="text-[22px] font-bold tracking-[-0.03em]">仍然没有解决？</h2>
+                            <p className="mt-1 text-muted-foreground">团队和社区提供免费的邮件支持。</p>
                         </div>
-                        <a href="mailto:opendevsociety@gmail.com" className="btn btn-primary h-11 px-5 text-[15px]">Email support</a>
+                        <a href="mailto:opendevsociety@gmail.com" className="btn btn-primary h-11 px-5 text-[15px]">邮件支持</a>
                     </div>
                 </div>
             </section>
