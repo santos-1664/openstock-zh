@@ -40,9 +40,9 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
     const native = market.pulse.some((p) => p.finnhub);
     const pulseSub = native ? t('pulseSubFinnhub') : market.yahoo ? t('pulseSubYahoo') : t('pulseSubTradingView', { feed });
     const heatmap = market.heatmap === 'stocks'
-        ? { script: 'stock-heatmap.js', config: { ...STOCK_HEATMAP_CONFIG, locale }, title: t('stockHeatmapTitle') }
+        ? { script: 'stock-heatmap.js', config: { ...STOCK_HEATMAP_CONFIG, locale: locale === 'zh' ? 'zh_CN' : locale }, title: t('stockHeatmapTitle') }
         : market.heatmap === 'crypto'
-            ? { script: 'crypto-coins-heatmap.js', config: { ...CRYPTO_HEATMAP_CONFIG, locale }, title: t('cryptoHeatmapTitle') }
+            ? { script: 'crypto-coins-heatmap.js', config: { ...CRYPTO_HEATMAP_CONFIG, locale: locale === 'zh' ? 'zh_CN' : locale }, title: t('cryptoHeatmapTitle') }
             : null;
 
     return (
