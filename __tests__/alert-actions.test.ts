@@ -9,7 +9,8 @@ vi.mock('next/cache', () => ({ revalidatePath: vi.fn() }));
 vi.mock('@/database/mongoose', () => ({ connectToDatabase: vi.fn().mockResolvedValue({}) }));
 // Alerts are an OpenStock Cloud feature; most tests run with it on
 const flags = { alertsEnabled: true };
-vi.mock('@/lib/market-data', () => ({ get alertsEnabled() { return flags.alertsEnabled; } }));
+vi.mock('@/lib/market-data', () => ({ get alertsEnabled() { return flags.alertsEnabled; }, inAppAlertsEnabled: true }));
+vi.mock('@/lib/actions/finnhub.actions', () => ({ getLiveQuotes: vi.fn() }));
 
 const findOneAndDelete = vi.fn();
 const create = vi.fn();
@@ -71,9 +72,9 @@ describe('alert actions are scoped to the session user', () => {
         }
     });
 
-    it('refuses alerts the checker could never price', async () => {
-        await expect(createAlert({ symbol: 'RELIANCE.NS', targetPrice: 1000, condition: 'ABOVE' })).rejects.toThrow('US stocks and crypto');
-        expect(create).not.toHaveBeenCalled();
+    it('supports international quotes through the fallback provider', async () => {
+        await createAlert({ symbol: 'RELIANCE.NS', targetPrice: 1000, condition: 'ABOVE' });
+        expect(create).toHaveBeenCalledWith(expect.objectContaining({ symbol: 'RELIANCE.NS', userId: 'user-123' }));
     });
 });
 
