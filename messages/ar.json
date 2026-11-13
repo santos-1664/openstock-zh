@@ -246,7 +246,8 @@
     "quotesTitle": "الأسعار",
     "quotesSub": "{market} · القادة حسب المجموعة",
     "storiesTitle": "أهم الأخبار",
-    "storiesSub": "الأحدث أولًا"
+    "storiesSub": "الأحدث أولًا",
+    "pulseSubProvider": "صناديق تتبع المؤشرات · الأسعار من {provider}"
   },
   "MarketSwitcher": {
     "label": "السوق",
@@ -260,7 +261,9 @@
   "DataFreshness": {
     "live": "مباشر · ١٥ ث",
     "asOf": "حتى {time} · يُحدَّث كل ساعة",
-    "delayed": "متأخر · يُحدَّث كل ساعة"
+    "delayed": "متأخر · يُحدَّث كل ساعة",
+    "delayedFiveMinutes": "أسعار متأخرة · تخزين مؤقت لمدة 5 دقائق",
+    "asOfFiveMinutes": "حتى {time} · تخزين مؤقت لمدة 5 دقائق"
   },
   "YahooQuotes": {
     "changePercent": "٪ التغير",
@@ -400,7 +403,9 @@
     "addFailed": "تعذّرت إضافة الرمز",
     "addTitle": "أضف {symbol} إلى {list}",
     "add": "أضف",
-    "adding": "جارٍ الإضافة"
+    "adding": "جارٍ الإضافة",
+    "loadFailed": "البحث غير متاح مؤقتًا. يرجى المحاولة مجددًا.",
+    "retry": "إعادة البحث"
   },
   "UpdateBanner": {
     "new": "جديد",
@@ -511,7 +516,7 @@
     "newsSubWatched": "آخر أخبار رموزك",
     "newsSubGeneral": "أخبار السوق العامة",
     "alertsTitle": "التنبيهات",
-    "alertsSubActive": "{count} نشط · يُفحص كل ٥ دقائق",
+    "alertsSubActive": "{count} تنبيهات نشطة · تُفحص كل دقيقة أثناء فتح الصفحة",
     "alertsSubCloud": "ميزة OpenStock Cloud",
     "listsTitle": "قوائمي",
     "listsSub": "رتّب الأسهم التي تتابعها في قوائم بأسماء"
@@ -543,7 +548,8 @@
     "below": "تحت ⁦{price}⁩",
     "until": "حتى {date}",
     "removeTitle": "حذف التنبيه",
-    "removeLabel": "احذف تنبيه {symbol}"
+    "removeLabel": "احذف تنبيه {symbol}",
+    "inAppNote": "تُفحص التنبيهات كل دقيقة أثناء فتح الصفحة. قد تكون الأسعار مخزنة مؤقتًا أو متأخرة. لا يُرسل بريد إلكتروني أو إشعار بعد إغلاق الصفحة."
   },
   "CreateAlertModal": {
     "risesAbove": "يصعد فوق",
@@ -563,7 +569,8 @@
     "cloudTitle": "تنبيهات الأسعار تأتي مع Cloud",
     "cloudBody": "يضيف Cloud تنبيهات الأسعار بالبريد والأسعار المباشرة مقابل ٥ دولارات شهرياً، وهو قادم قريباً. أما الاستضافة الذاتية فتتضمن الميزتين اليوم.",
     "seeCloud": "شاهد OpenStock Cloud",
-    "selfHost": "استضف بنفسك"
+    "selfHost": "استضف بنفسك",
+    "descriptionInApp": "تنبيه داخل التطبيق عند بلوغ السعر المستهدف. أبقِ الصفحة مفتوحة للفحص كل دقيقة؛ قد تتأخر الأسعار. لا تُرسل رسائل بريد إلكتروني."
   },
   "NewsList": {
     "emptyTitle": "لا أخبار حديثة",
@@ -600,5 +607,16 @@
     "retryHint": "أُنشئت «{list}»، اضغط الزر مرة أخرى لإعادة محاولة إضافة {symbol}.",
     "retryAdd": "أعد المحاولة",
     "createAndAdd": "أنشئ وأضف"
+  },
+  "AlertMonitor": {
+    "triggered": "وصل {symbol} إلى السعر المستهدف",
+    "price": "السعر الحالي {price}؛ السعر المستهدف {target}",
+    "checkFailed": "تعذر فحص تنبيهات الأسعار. ستُعاد المحاولة قريبًا."
+  },
+  "AppFeedback": {
+    "loading": "جارٍ التحميل، يرجى الانتظار…",
+    "errorTitle": "تعذر تحميل الصفحة",
+    "errorBody": "قد تكون خدمة البيانات غير متاحة مؤقتًا. يرجى المحاولة مجددًا.",
+    "retry": "إعادة المحاولة"
   }
 }
