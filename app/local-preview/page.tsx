@@ -1,3 +1,4 @@
+import IndexHeatmaps from '@/components/IndexHeatmaps';
 import { indexLabelZh } from '@/i18n/display';
 import { Suspense } from "react";
 import { cookies } from "next/headers";
@@ -72,7 +73,8 @@ async function Dashboard({ searchParams }: { searchParams: Promise<{ market?: st
             </section>
 
             <div key={market.id} className="flex flex-col gap-3">
-                <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+                {market.id === "us" && <IndexHeatmaps locale={locale} />}
+                <div className={market.id === "us" ? "grid gap-3" : "grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]"}>
                     {market.yahoo ? (
                         <Panel title={t('moversTitle')} sub={t('moversSub')}>
                             <YahooMovers market={market} />
@@ -82,7 +84,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<{ market?: st
                             <TradingViewWidget scriptUrl={`${scriptUrl}market-overview.js`} config={marketOverviewConfig(groups, locale)} height={560} />
                         </Panel>
                     )}
-                    {heatmap ? (
+                    {market.id === "us" ? null : heatmap ? (
                         <Panel title={heatmap.title} sub={t('heatmapSub')}>
                             <TradingViewWidget scriptUrl={`${scriptUrl}${heatmap.script}`} config={heatmap.config} height={560} allowExpand labels={expandLabels} />
                         </Panel>
