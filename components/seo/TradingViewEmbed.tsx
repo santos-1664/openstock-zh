@@ -17,7 +17,7 @@ export default function TradingViewEmbed({
 }) {
     return (
         <div>
-            <TradingViewWidget scriptUrl={scriptUrl} config={config} height={height} allowExpand />
+            <TradingViewWidget scriptUrl={scriptUrl} config={config} height={height} allowExpand labels={{ fullScreen: "全屏", exitFullScreen: "退出全屏", exitFullScreenHint: "退出全屏（Esc）" }} />
             <p className="tradingview-widget-copyright">
                 <a href={creditHref} target="_blank" rel="noopener nofollow">{creditLabel}</a>
             </p>
