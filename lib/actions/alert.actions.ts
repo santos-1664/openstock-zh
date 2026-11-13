@@ -4,8 +4,11 @@ import { connectToDatabase } from '@/database/mongoose';
 import { alertModel } from '@/database/models/alert.model';
 import { revalidatePath } from 'next/cache';
 import { requireUserId } from '@/lib/better-auth/auth';
-import { hasFinnhubQuotes } from '@/lib/markets';
-import { alertsEnabled } from '@/lib/market-data';
+import { normalizeYahooQuoteSymbol } from '@/lib/yahoo';
+import { alertsEnabled, inAppAlertsEnabled } from '@/lib/market-data';
+import { getLiveQuotes } from '@/lib/actions/finnhub.actions';
+import { isRateLimited } from '@/lib/rate-limit';
+import { isAlertConditionMet } from '@/lib/alert-conditions';
 
 // A ticker (AAPL, BRK.B) or a Binance pair. Anything else, including markup, is rejected:
 // the symbol ends up in alert emails.
@@ -29,7 +32,7 @@ export async function createAlert(params: {
     if (!SYMBOL_PATTERN.test(symbol)) throw new Error('Invalid symbol');
     if (!CONDITIONS.includes(condition)) throw new Error('Invalid condition');
     // The alert checker prices symbols through Finnhub, whose free plan covers US stocks and crypto
-    if (!hasFinnhubQuotes(symbol)) throw new Error('Alerts are available for US stocks and crypto');
+    if (!normalizeYahooQuoteSymbol(symbol)) throw new Error('Unsupported market symbol');
     if (!Number.isFinite(targetPrice) || targetPrice <= 0) throw new Error('Target price must be a positive number');
 
     const db = await connectToDatabase();
@@ -59,6 +62,30 @@ export async function getUserAlerts() {
         console.error('Error fetching alerts:', error);
         return [];
     }
+}
+
+// Personal deployments can deliver alerts inside the app, without an SMTP account or paid scheduler.
+// The owner and atomic active/triggered filter prevent cross-account reads and duplicate notifications.
+export async function checkUserAlerts() {
+    const userId = await requireUserId();
+    if (!inAppAlertsEnabled || await isRateLimited(`alerts:user:${userId}`, 4, 60)) return [];
+    const now = new Date();
+    const Alert = alertModel(await connectToDatabase());
+    const active = await Alert.find({ userId, active: true, triggered: false, expiresAt: { $gt: now } }).limit(50).lean();
+    if (!active.length) return [];
+    const quotes = await getLiveQuotes([...new Set(active.map((a) => a.symbol))]);
+    const triggered: { id: string; symbol: string; price: number; target: number }[] = [];
+    for (const alert of active) {
+        const quote = quotes[alert.symbol];
+        if (!isAlertConditionMet(alert, quote)) continue;
+        const claimed = await Alert.findOneAndUpdate(
+            { _id: alert._id, userId, active: true, triggered: false, expiresAt: { $gt: now } },
+            { $set: { active: false, triggered: true, triggeredAt: now, triggerPrice: quote!.c } },
+            { new: true },
+        );
+        if (claimed) triggered.push({ id: String(alert._id), symbol: alert.symbol, price: quote!.c!, target: alert.targetPrice });
+    }
+    return triggered;
 }
 
 // Delete an alert
