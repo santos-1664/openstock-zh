@@ -92,14 +92,14 @@ export function dailyQuoteFromChart(json: unknown, fallbackCurrency = 'USD'): Ya
     const finite = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
     const price = finite(meta?.regularMarketPrice) ? meta.regularMarketPrice : closes[closes.length - 1];
     if (!(price > 0)) return null;
-    const prev = finite(meta?.previousClose) ? meta.previousClose : closes.length > 1 ? closes[closes.length - 2] : null;
-    const change = finite(meta?.fulldayChange) ? meta.fulldayChange : prev != null ? price - prev : 0;
+    const prev = finite(meta?.previousClose) && meta.previousClose > 0 ? meta.previousClose : closes.length > 1 ? closes[closes.length - 2] : null;
+    const change = prev != null ? price - prev : finite(meta?.fulldayChange) ? meta.fulldayChange : 0;
     const last = (values?: (number | null)[]) => values?.filter(finite).at(-1);
     const candle = result.indicators?.quote?.[0];
     return {
         price,
         change,
-        changePercent: finite(meta?.regularMarketChangePercent) ? meta.regularMarketChangePercent : prev ? (change / prev) * 100 : 0,
+        changePercent: prev ? (change / prev) * 100 : finite(meta?.regularMarketChangePercent) ? meta.regularMarketChangePercent : 0,
         currency: result.meta?.currency || fallbackCurrency,
         name: result.meta?.longName || result.meta?.shortName || '',
         open: last(candle?.open),
