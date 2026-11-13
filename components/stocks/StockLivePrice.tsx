@@ -22,7 +22,8 @@ const StockLivePrice = ({ symbol, initial, currency }: { symbol: string; initial
                         {quote?.d != null ? `${quote.d > 0 ? '+' : ''}${quote.d.toFixed(2)}` : ''}
                     </span>
                 </span>
-                <LocalizedDataFreshness tradeTime={quote?.t} />
+                <LocalizedDataFreshness tradeTime={quote?.t} source={quote?.source} />
+                {quote?.source && <span className="text-[11px] text-faint">{quote.source}</span>}
             </div>
         </div>
     );
