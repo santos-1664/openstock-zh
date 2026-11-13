@@ -32,7 +32,7 @@ export default function StockDirectoryPage() {
                 sub={`收录 ${US_TICKERS.length} 家标普 500 与纳斯达克 100 公司，每页提供 TradingView 图表及 SEC EDGAR 最新年报和季报。登录后可使用自选股与提醒。`}
             >
                 <Link href="/sign-up" className="btn btn-primary h-11 px-5 text-[15px]">免费跟踪</Link>
-                <Link href="/compare" className="btn btn-ghost h-11 px-5 text-[15px]">阅读指南</Link>
+                <Link href="/help" className="btn btn-ghost h-11 px-5 text-[15px]">使用帮助</Link>
             </PageHero>
 
             <nav aria-label="行业板块" className="mx-auto mt-10 flex max-w-[1200px] flex-wrap gap-2 px-5">
