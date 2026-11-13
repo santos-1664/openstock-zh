@@ -1,3 +1,4 @@
+import { isAlertMonitoring } from '@/lib/alert-conditions';
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Bell, KeyRound, ShieldCheck, Star } from "lucide-react";
@@ -34,7 +35,7 @@ export default async function ProfilePage() {
         getUserAlerts(),
     ]);
     const linked = new Set(accounts.map((a: { providerId: string }) => a.providerId));
-    const activeAlerts = alerts.filter((a: { triggered?: boolean }) => !a.triggered).length;
+    const activeAlerts = alertsEnabled ? alerts.filter((a: Parameters<typeof isAlertMonitoring>[0]) => isAlertMonitoring(a)).length : 0;
     const memberSince = new Date(user.createdAt).toLocaleDateString(locale, { month: 'long', year: 'numeric' });
 
     const stats = [
