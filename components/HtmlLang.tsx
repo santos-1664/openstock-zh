@@ -11,12 +11,12 @@ export default function HtmlLang({ locale }: { locale: string }) {
     const dir = localeDir(locale);
     useLayoutEffect(() => {
         const html = document.documentElement;
-        html.lang = locale;
+        html.lang = locale === 'zh' ? 'zh-CN' : locale;
         if (dir === 'rtl') html.dir = dir;
         else html.removeAttribute('dir');
         // Leaving for the English-only public pages puts <html> back the way they render it
         return () => {
-            html.lang = 'en';
+            html.lang = 'zh-CN';
             html.removeAttribute('dir');
         };
     }, [locale, dir]);
