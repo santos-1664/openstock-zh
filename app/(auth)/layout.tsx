@@ -1,3 +1,4 @@
+import { isGoogleSignInReady } from '@/lib/auth-readiness';
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
@@ -20,7 +21,7 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
 
     // Same condition that enables the providers in lib/better-auth/auth.ts
     const socialProviders = [
-        ...(process.env.GOOGLE_CLIENT_ID ? ['google' as const] : []),
+        ...(isGoogleSignInReady() ? ['google' as const] : []),
         ...(process.env.GITHUB_CLIENT_ID ? ['github' as const] : []),
     ];
     return (
