@@ -6,7 +6,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, Dia
 import { LATEST_RELEASE } from "@/lib/changelog";
 import { cn } from "@/lib/utils";
 
-const DEFAULT_LABELS = { new: 'New', seeWhatsNew: 'See what’s new', fullChangelog: 'Read the full changelog' };
+const DEFAULT_LABELS = { new: "更新", seeWhatsNew: "查看更新", fullChangelog: "查看完整更新日志" };
 
 // Always shows the latest release. The whole strip opens a short summary; the full history is on /changelog.
 // The release notes stay English. The marketing layout has no intl provider, so translated chrome comes in as `labels`.
