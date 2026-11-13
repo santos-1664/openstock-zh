@@ -178,7 +178,10 @@
     "signInFailed": "Nie udało się zalogować",
     "connectionError": "Sprawdź połączenie i spróbuj jeszcze raz.",
     "redirecting": "Przekierowywanie…",
-    "or": "lub"
+    "or": "lub",
+    "googleContinue": "Kontynuuj z Google",
+    "googleUnavailable": "Logowanie Google nie jest jeszcze dostępne. Możesz przeglądać publiczne mapy rynku.",
+    "browseHeatmaps": "Zobacz mapy rynku"
   },
   "CountrySelect": {
     "placeholder": "Wybierz kraj…",
