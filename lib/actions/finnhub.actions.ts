@@ -5,8 +5,9 @@ import { POPULAR_STOCKS } from '@/lib/constants';
 import { cache } from 'react';
 import { QUOTE_TTL_SECONDS } from '@/lib/market-data';
 import { hasFinnhubCompanyData, hasFinnhubQuotes } from '@/lib/markets';
-import { getYahooDailyQuotes } from '@/lib/actions/yahoo.actions';
-import { isYahooSymbol } from '@/lib/yahoo';
+import { getYahooDailyQuotes, getYahooNews, searchYahooStocks } from '@/lib/actions/yahoo.actions';
+import { isYahooSymbol, normalizeYahooQuoteSymbol } from '@/lib/yahoo';
+import { isRateLimited } from '@/lib/rate-limit';
 import { getSession } from '@/lib/better-auth/auth';
 import { getTranslations } from 'next-intl/server';
 
@@ -20,6 +21,9 @@ const FINNHUB_KEYS = (env.FINNHUB_API_KEYS || env.NEXT_PUBLIC_FINNHUB_API_KEY ||
     .map((k) => k.trim())
     .filter(Boolean);
 let nextKeyIndex = 0;
+export async function getMarketDataProvider() {
+    return FINNHUB_KEYS.length ? 'Finnhub' : 'Yahoo Finance';
+}
 const FETCH_TIMEOUT_MS = 5000;
 // Finnhub stalls bursts of parallel requests from one key (measured: 4 at once -> most hang),
 // so calls are queued. ponytail: per-instance limiter; a shared queue (Redis) if instances multiply.
@@ -32,6 +36,7 @@ const LIVE_QUOTE_TTL = QUOTE_TTL_SECONDS;
 const SHARED_CACHE_MIN_TTL = 60;
 
 type FinnhubQuote = {
+    source?: 'Finnhub' | 'Yahoo Finance';
     c?: number;  // current
     d?: number;  // change
     dp?: number; // change %
@@ -175,24 +180,37 @@ function getExchangeLabel(symbol: string, exchange?: string) {
 }
 
 export async function getQuote(symbol: string, revalidateSeconds = 0) {
+    symbol = String(symbol).trim().toUpperCase();
+    const yahooQuote = async (): Promise<FinnhubQuote | null> => {
+        const q = (await getYahooDailyQuotes([symbol]))[symbol];
+        return q ? { c: q.price, d: q.change, dp: q.changePercent, o: q.open, h: q.high, l: q.low,
+            pc: q.previousClose, t: q.tradeTime, source: 'Yahoo Finance' } : null;
+    };
+    if (!FINNHUB_KEYS.length || !hasFinnhubQuotes(symbol)) return yahooQuote();
     try {
         const url = `${FINNHUB_BASE_URL}/quote?symbol=${encodeURIComponent(symbol)}`;
         // Real-time by default; shared views pass a short cache to stay inside Finnhub's 60 req/min
-        return await fetchJSON<FinnhubQuote>(url, revalidateSeconds);
+        const quote = await fetchJSON<FinnhubQuote>(url, revalidateSeconds);
+        return quote?.c && quote.c > 0 ? { ...quote, source: 'Finnhub' as const } : yahooQuote();
     } catch (e) {
         logFailure('quote', symbol, e);
-        return null;
+        return yahooQuote();
     }
 }
 
 // Shared, short-lived quotes for anything shown live on screen (pages and /api/quotes)
 export async function getLiveQuotes(symbols: string[]) {
     // Symbols the free plan can't price are skipped instead of spending a request on a 403
-    const quotes = await Promise.all(symbols.map((s) => (hasFinnhubQuotes(s) ? getQuote(s, LIVE_QUOTE_TTL) : null)));
-    return Object.fromEntries(symbols.map((s, i) => [s, quotes[i]?.c ? quotes[i] : null]));
+    const clean = [...new Set(symbols.map((s) => String(s).trim().toUpperCase()))].slice(0, 50);
+    const quotes = await Promise.all(clean.map((s) => (normalizeYahooQuoteSymbol(s) ? getQuote(s, LIVE_QUOTE_TTL) : null)));
+    return Object.fromEntries(clean.map((s, i) => [s, quotes[i]?.c ? quotes[i] : null]));
 }
 
 export async function getCompanyProfile(symbol: string) {
+    if (!FINNHUB_KEYS.length) {
+        const q = (await getYahooDailyQuotes([symbol]))[symbol];
+        return q ? { name: q.name || symbol, ticker: symbol, currency: q.currency, exchange: q.exchange } as FinnhubCompanyProfile : null;
+    }
     // Profiles exist for stocks Finnhub free covers; crypto pairs and non-US listings have none
     if (!hasFinnhubCompanyData(symbol)) return null;
     try {
@@ -229,7 +247,7 @@ export async function getWatchlistData(symbols: string[]) {
     if (!symbols || symbols.length === 0) return [];
 
     // Finnhub free doesn't price Tadawul or Warsaw; Yahoo does (delayed)
-    const yahoo = await getYahooDailyQuotes(symbols.filter(isYahooSymbol));
+    const yahoo = await getYahooDailyQuotes(symbols.filter((s) => !FINNHUB_KEYS.length || isYahooSymbol(s) || !hasFinnhubQuotes(s)));
 
     // Fetch quotes and profiles in parallel
     const promises = symbols.map(async (sym) => {
@@ -260,9 +278,7 @@ export async function getWatchlistData(symbols: string[]) {
 export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> {
     try {
         const range = getDateRange(5);
-        if (FINNHUB_KEYS.length === 0) {
-            throw new Error('FINNHUB API key is not configured');
-        }
+        if (FINNHUB_KEYS.length === 0) return getYahooNews(symbols);
         const cleanSymbols = (symbols || [])
             .map((s) => s?.trim().toUpperCase())
             .filter((s): s is string => Boolean(s) && hasFinnhubCompanyData(s));
@@ -336,56 +352,42 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
     }
 }
 
+const SEARCH_ALIASES: Record<string, string> = {
+    '苹果': 'AAPL', '微软': 'MSFT', '英伟达': 'NVDA', '特斯拉': 'TSLA', '亚马逊': 'AMZN',
+    '谷歌': 'GOOGL', '脸书': 'META', '标普': 'SPY', '标普500': 'SPY', '纳指': 'QQQ',
+    '纳斯达克': 'QQQ', '纳斯达克100': 'QQQ', '道琼斯': 'DIA', '罗素': 'IWM',
+};
+const SEARCH_STOCKS = [
+    ...POPULAR_STOCKS,
+    { symbol: 'SPY', name: 'SPDR S&P 500 ETF', exchange: 'NYSE Arca' },
+    { symbol: 'QQQ', name: 'Invesco Nasdaq 100 ETF', exchange: 'NASDAQ' },
+    { symbol: 'DIA', name: 'SPDR Dow Jones Industrial Average ETF', exchange: 'NYSE Arca' },
+    { symbol: 'IWM', name: 'iShares Russell 2000 ETF', exchange: 'NYSE Arca' },
+];
+
 export const searchStocks = cache(async (query?: string): Promise<StockWithWatchlistStatus[]> => {
+    const trimmed = typeof query === 'string' ? query.trim().slice(0, 80) : '';
+    const term = SEARCH_ALIASES[trimmed.replace(/\s/g, '')] || trimmed;
+    const local = SEARCH_STOCKS.filter((s) => !term || `${s.symbol} ${s.name}`.toLowerCase().includes(term.toLowerCase()))
+        .map((s) => ({ ...s, type: /ETF/.test(s.name) ? 'ETF' : 'Stock', isInWatchlist: false }));
+    // Opening the search must work without a provider key or a network round trip.
+    if (!trimmed) return local.slice(0, 15);
+    const session = await getSession();
+    if (!session?.user) return [];
+    if (await isRateLimited(`search:user:${session.user.id}`, 30, 60)) throw new Error('Search rate limit reached');
     try {
-        if (FINNHUB_KEYS.length === 0) {
-            // If no token, log and return empty to avoid throwing per requirements
-            console.error('Error in stock search:', new Error('FINNHUB API key is not configured'));
-            return [];
-        }
-
-        const trimmed = typeof query === 'string' ? query.trim() : '';
-
-        let results: SearchStockCandidate[] = [];
-
-        if (!trimmed) {
-            // Shown in the palette on every page, so no API calls: Finnhub's free tier is 60 req/min
-            results = POPULAR_STOCKS.map(({ symbol, name, exchange }) => ({
-                symbol,
-                description: name,
-                displaySymbol: symbol,
-                type: 'Common Stock',
-                __exchange: exchange,
+        let remote: StockWithWatchlistStatus[];
+        if (!FINNHUB_KEYS.length) remote = await searchYahooStocks(term);
+        else {
+            const data = await fetchJSON<FinnhubSearchResponse>(`${FINNHUB_BASE_URL}/search?q=${encodeURIComponent(term)}`, 1800);
+            remote = (data?.result ?? []).map((r) => ({
+                symbol: r.symbol.toUpperCase(), name: r.description || r.symbol,
+                exchange: getExchangeLabel(r.symbol), type: r.type || 'Stock', isInWatchlist: false,
             }));
-        } else {
-            // A public server action: only signed-in users may spend Finnhub quota on searches
-            if (!(await getSession())?.user) return [];
-            const url = `${FINNHUB_BASE_URL}/search?q=${encodeURIComponent(trimmed)}`;
-            const data = await fetchJSON<FinnhubSearchResponse>(url, 1800);
-            results = Array.isArray(data?.result) ? data.result : [];
         }
-
-        const mapped: StockWithWatchlistStatus[] = results
-            .map((r) => {
-                const upper = (r.symbol || '').toUpperCase();
-                const name = r.description || upper;
-                const exchangeFromProfile = r.__exchange;
-                const exchange = getExchangeLabel(upper, exchangeFromProfile);
-                const type = r.type || 'Stock';
-                const item: StockWithWatchlistStatus = {
-                    symbol: upper,
-                    name,
-                    exchange,
-                    type,
-                    isInWatchlist: false,
-                };
-                return item;
-            })
-            .slice(0, 15);
-
-        return mapped;
-    } catch (err) {
-        console.error('Error in stock search:', err);
-        return [];
+        return [...new Map([...local, ...remote].map((s) => [s.symbol, s])).values()].slice(0, 15);
+    } catch {
+        if (local.length) return local.slice(0, 15);
+        throw new Error('Stock search is temporarily unavailable');
     }
 });
