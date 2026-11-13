@@ -43,8 +43,8 @@ export default async function NamedListTable({
                     <tr>
                         <th>{th('company')}</th>
                         <th className="is-num">{th('price')}</th>
-                        <th className="is-num">{tr('today')}</th>
                         <th className="is-num">{th('change')}</th>
+                        <th className="is-num">{tr('today')}</th>
                         <th className="is-num">{th('marketCap')}</th>
                         <th className="w-[88px]"><span className="sr-only">{th('action')}</span></th>
                     </tr>
