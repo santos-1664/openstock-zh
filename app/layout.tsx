@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import {Toaster} from "@/components/ui/sonner";
-import OntoLaunchCard from "@/components/OntoLaunchCard";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,8 +19,6 @@ export default function RootLayout({
             >
                 {children}
                 <Toaster/>
-                <OntoLaunchCard />
-                <Analytics />
             </body>
         </html>
     );
