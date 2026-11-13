@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dailyQuoteFromChart, normalizeYahooSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
+import { dailyQuoteFromChart, normalizeYahooSymbol, normalizeYahooQuoteSymbol, yahooAppSymbol, yahooCurrency } from '@/lib/yahoo';
 import { formatSymbolForTradingView, isChartEmbeddable } from '@/lib/utils';
 
 describe('Tadawul symbols', () => {
@@ -72,5 +72,30 @@ describe('dailyQuoteFromChart', () => {
     it('returns null when Yahoo has nothing', () => {
         expect(dailyQuoteFromChart({ chart: { result: null } })).toBeNull();
         expect(dailyQuoteFromChart(chart([null]))).toBeNull();
+    });
+});
+
+describe('general market quote fallback', () => {
+    it('covers headline ETFs, US share classes, international stocks and crypto without accepting URLs', () => {
+        expect(normalizeYahooQuoteSymbol('spy')).toBe('SPY');
+        expect(normalizeYahooQuoteSymbol('NASDAQ:QQQ')).toBe('QQQ');
+        expect(normalizeYahooQuoteSymbol('BRK.B')).toBe('BRK-B');
+        expect(normalizeYahooQuoteSymbol('XETR:SAP')).toBe('SAP.DE');
+        expect(normalizeYahooQuoteSymbol('BINANCE:BTCUSDT')).toBe('BTC-USD');
+        expect(normalizeYahooQuoteSymbol('https://example.com')).toBeNull();
+        expect(normalizeYahooQuoteSymbol('AAPL?token=secret')).toBeNull();
+    });
+
+    it('uses yesterday’s close, rather than the first close of a multi-day chart, for the daily change', () => {
+        const result = dailyQuoteFromChart({ chart: { result: [{
+            meta: { regularMarketPrice: 110, chartPreviousClose: 80, regularMarketTime: 1794517200 },
+            indicators: { quote: [{ close: [90, 100, 110], open: [88, 95, 104], high: [92, 101, 111], low: [87, 94, 103] }] },
+        }] } });
+        expect(result).toMatchObject({ price: 110, change: 10, changePercent: 10, previousClose: 100, open: 104, high: 111, low: 103, tradeTime: 1794517200 });
+    });
+
+    it('rejects a zero price and does not render non-finite provider prices', () => {
+        expect(dailyQuoteFromChart({ chart: { result: [{ meta: { regularMarketPrice: 0 }, indicators: { quote: [{ close: [1, 2] }] } }] } })).toBeNull();
+        expect(dailyQuoteFromChart({ chart: { result: [{ meta: { regularMarketPrice: NaN }, indicators: { quote: [{ close: [10, 11] }] } }] } })?.price).toBe(11);
     });
 });
