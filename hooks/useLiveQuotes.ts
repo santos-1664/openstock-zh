@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { isRealtime } from "@/lib/market-data";
+import { DATA_MODE, isRealtime } from "@/lib/market-data";
 
-export type LiveQuote = { c?: number; d?: number; dp?: number; h?: number; l?: number; o?: number; pc?: number; t?: number };
+export type LiveQuote = { c?: number; d?: number; dp?: number; h?: number; l?: number; o?: number; pc?: number; t?: number; source?: 'Finnhub' | 'Yahoo Finance' };
 
 // Realtime mode only: polls the shared /api/quotes cache while the tab is visible.
 // In cached mode prices come from the server render and refresh hourly for everyone.
@@ -12,7 +12,7 @@ export function useLiveQuotes(symbols: string[], intervalMs = 15_000) {
     const key = symbols.join(",");
 
     useEffect(() => {
-        if (!key || !isRealtime) return;
+        if (!key || DATA_MODE === 'cached') return;
         let cancelled = false;
 
         const load = async () => {
@@ -24,7 +24,7 @@ export function useLiveQuotes(symbols: string[], intervalMs = 15_000) {
         };
         const onVisibility = () => { if (document.visibilityState === "visible") load(); };
 
-        const interval = setInterval(load, intervalMs);
+        const interval = setInterval(load, isRealtime ? intervalMs : 60_000);
         document.addEventListener("visibilitychange", onVisibility);
         return () => {
             cancelled = true;
