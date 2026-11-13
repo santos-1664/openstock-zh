@@ -9,3 +9,11 @@ export function isAlertConditionMet(
     return alert.condition === 'ABOVE' ? quote!.c! >= alert.targetPrice
         : alert.condition === 'BELOW' ? quote!.c! <= alert.targetPrice : false;
 }
+
+// Keep monitoring counts aligned with the server's trigger eligibility.
+export function isAlertMonitoring(alert: { active?: boolean; triggered?: boolean; expiresAt?: string | Date }, now = Date.now()) {
+    if (alert.triggered || alert.active === false) return false;
+    if (!alert.expiresAt) return true;
+    const expires = new Date(alert.expiresAt).getTime();
+    return Number.isFinite(expires) && expires > now;
+}
