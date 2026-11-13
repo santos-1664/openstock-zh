@@ -73,10 +73,10 @@ describe('tickers', () => {
     it('writes an intro from static facts and does not invent a price', () => {
         const intro = tickerIntro(findTicker('AAPL')!);
         expect(intro).toContain('Apple Inc.');
-        expect(intro).toContain('S&P 500');
-        expect(intro).toContain('Nasdaq-100');
+        expect(intro).toContain('标普 500');
+        expect(intro).toContain('纳斯达克 100');
         expect(intro.toLowerCase()).not.toContain('finnhub');
-        expect(intro).toContain('does not include a price quote');
+        expect(intro).toContain('不单独提供价格报价');
     });
 
     it('links peers in the same sector and the neighbouring symbols', () => {
