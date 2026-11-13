@@ -1,24 +1,13 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations } from 'next-intl/server';
 
-// Shown inside the workspace while a page renders, so navigation never feels frozen.
 export default async function Loading() {
-    const t = await getTranslations('Common');
-    return (
-        <div className="flex flex-col gap-3" aria-busy="true" aria-label={t('loading')}>
-            <div className="flex flex-col gap-2 px-1 pt-1">
-                <span className="h-7 w-48 animate-pulse rounded-lg bg-hover" />
-                <span className="h-4 w-72 animate-pulse rounded-md bg-hover/70" />
+    const t = await getTranslations('AppFeedback');
+    return <section aria-busy="true" aria-live="polite" className="hatch">
+        <div className="card p-5">
+            <p className="text-faint">{t('loading')}</p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {[0, 1, 2, 3].map((n) => <div key={n} className="h-28 animate-pulse rounded-xl bg-hover" />)}
             </div>
-            <section className="hatch">
-                <div className="bento">
-                    {[0, 1, 2, 3].map((i) => (
-                        <div key={i} className="bento-tile h-[124px]"><span className="h-full animate-pulse rounded-lg bg-hover/60" /></div>
-                    ))}
-                </div>
-            </section>
-            <section className="hatch">
-                <div className="card h-[420px] animate-pulse" />
-            </section>
         </div>
-    );
+    </section>;
 }
