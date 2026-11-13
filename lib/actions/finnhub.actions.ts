@@ -225,10 +225,7 @@ export async function getCompanyProfile(symbol: string) {
 
 export async function getStockMetrics(symbol: string): Promise<number | null> {
     if (!hasFinnhubCompanyData(symbol)) return null;
-    if (FINNHUB_KEYS.length === 0) {
-        console.error('FINNHUB API key is not configured');
-        return null;
-    }
+    if (FINNHUB_KEYS.length === 0) return null;
 
     try {
         const url = `${FINNHUB_BASE_URL}/stock/metric?symbol=${encodeURIComponent(symbol)}&metric=all`;
