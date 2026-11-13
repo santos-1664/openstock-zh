@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isAlertConditionMet } from '@/lib/alert-conditions';
+import { isAlertConditionMet, isAlertMonitoring } from '@/lib/alert-conditions';
 
 const now = Date.parse('2026-11-13T12:00:00Z');
 const quote = (c: number) => ({ c, t: now / 1000 });
@@ -17,5 +17,15 @@ describe('in-app alert conditions', () => {
             expect(isAlertConditionMet(alert, q, now)).toBe(false);
         }
         expect(isAlertConditionMet({ condition: 'OTHER', targetPrice: 1 }, quote(100), now)).toBe(false);
+    });
+});
+
+describe('monitoring counts', () => {
+    it('excludes paused, triggered, expired and malformed-expiry alerts', () => {
+        for (const alert of [{active:false}, {triggered:true}, {expiresAt:new Date(now)}, {expiresAt:'invalid'}]) {
+            expect(isAlertMonitoring(alert, now)).toBe(false);
+        }
+        expect(isAlertMonitoring({active:true,expiresAt:new Date(now+60000)},now)).toBe(true);
+        expect(isAlertMonitoring({},now)).toBe(true);
     });
 });
