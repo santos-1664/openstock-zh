@@ -7,7 +7,7 @@ import { BellRing, Trash2 } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { deleteAlert } from "@/lib/actions/alert.actions";
-import { alertsEnabled } from "@/lib/market-data";
+import { alertsEnabled, inAppAlertsEnabled } from "@/lib/market-data";
 import { formatPrice } from "@/lib/utils";
 
 type AlertRow = {
@@ -64,12 +64,14 @@ export default function AlertsPanel({ alerts }: { alerts: AlertRow[] }) {
                 <span className="empty-icon"><BellRing className="size-5" /></span>
                 <h3>{t('emptyTitle')}</h3>
                 <p className="max-w-60 text-[13px]">{t('emptyBody')}</p>
+                {inAppAlertsEnabled && <p className="mt-2 max-w-72 text-xs text-faint">{t('inAppNote')}</p>}
             </div>
         );
     }
 
     return (
         <>
+            {inAppAlertsEnabled && <p className="px-3 pt-3 pb-2 text-xs text-faint">{t('inAppNote')}</p>}
             {!alertsEnabled && (
                 <p className="px-3 pt-3 pb-1 text-[12.5px] text-faint">
                     {t.rich('movedNotice', {
