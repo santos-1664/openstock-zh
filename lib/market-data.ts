@@ -12,9 +12,8 @@ export const QUOTE_TTL_SECONDS = DATA_MODE === 'realtime' ? 15 : DATA_MODE === '
 
 export const isRealtime = DATA_MODE === 'realtime';
 
-// In-app alerts need no email account or external scheduler. Email mode requires explicit configuration.
-export const ALERT_MODE = process.env.NEXT_PUBLIC_OPENSTOCK_ALERT_MODE === 'email' ? 'email'
-    : process.env.NEXT_PUBLIC_OPENSTOCK_ALERT_MODE === 'off' ? 'off' : 'in-app';
+// This deployment only offers in-app alerts; background email delivery is retired.
+export const ALERT_MODE = process.env.NEXT_PUBLIC_OPENSTOCK_ALERT_MODE === 'off' ? 'off' : 'in-app';
 export const alertsEnabled = ALERT_MODE !== 'off';
 export const inAppAlertsEnabled = ALERT_MODE === 'in-app';
-export const emailAlertsEnabled = ALERT_MODE === 'email';
+export const emailAlertsEnabled = false;
