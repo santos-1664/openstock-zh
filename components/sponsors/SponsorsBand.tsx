@@ -42,7 +42,7 @@ const tierName = (id: SponsorTierId) => SPONSOR_TIERS.find((t) => t.id === id)!.
 
 const Group = ({ tier, limited, children }: { tier: SponsorTierId; limited?: boolean; children: ReactNode }) => (
     <div className="flex flex-col gap-1.5">
-        <p className="kicker text-[10px]" style={{ color: TIER_COLOR[tier] }}>{tierName(tier)}{limited && ' (limited)'}</p>
+        <p className="kicker text-[10px]" style={{ color: TIER_COLOR[tier] }}>{tierName(tier)}{limited && '（席位有限）'}</p>
         <div className="flex flex-wrap gap-2">{children}</div>
     </div>
 );
@@ -53,7 +53,7 @@ export default function SponsorsBand() {
         const tier = SPONSOR_TIERS.find((t) => t.id === id)!;
         const sponsors = ACTIVE_SPONSORS.filter((s) => s.tier === id);
         // A limited tier shows every free slot; an unlimited one shows a single invite
-        return { id, sponsors, limited: !!tier.slots, open: tier.slots ? Math.max(0, tier.slots - sponsors.length) : 1, openLabel: tier.slots ? 'Slot open' : 'Add yours' };
+        return { id, sponsors, limited: !!tier.slots, open: tier.slots ? Math.max(0, tier.slots - sponsors.length) : 1, openLabel: tier.slots ? "席位开放" : "加入赞助" };
     });
     // Past sponsors without a recorded tier sit with the partners rather than disappearing
     const previous = (['partner', 'company'] as const)
@@ -66,12 +66,12 @@ export default function SponsorsBand() {
                 <div className="card grid items-center gap-8 p-6 md:p-8 lg:grid-cols-[minmax(0,1fr)_auto]">
                     <div className="flex min-w-0 flex-col gap-6">
                         <div>
-                            <p className="kicker flex items-center gap-2 text-brand-ink"><span className="live-dot" /> Open for sponsors</p>
-                            <h2 id="sponsors-band" className="mt-2 text-[24px] font-bold tracking-[-0.03em]">Keep market data free for everyone.</h2>
+                            <p className="kicker flex items-center gap-2 text-brand-ink"><span className="live-dot" /> 赞助席位开放中</p>
+                            <h2 id="sponsors-band" className="mt-2 text-[24px] font-bold tracking-[-0.03em]">让每个人都能免费获取市场数据。</h2>
                         </div>
 
                         <div className="flex flex-col gap-2.5">
-                            <p className="kicker">Current sponsors</p>
+                            <p className="kicker">当前赞助商</p>
                             <div className="flex flex-col gap-4">
                                 {current.map((g) => (
                                     <Group key={g.id} tier={g.id} limited={g.limited}>
@@ -84,7 +84,7 @@ export default function SponsorsBand() {
 
                         {(previous.length > 0 || SUPPORTERS.length > 0) && (
                             <div className="flex flex-col gap-2.5">
-                                <p className="kicker">Previously backed by</p>
+                                <p className="kicker">曾获支持</p>
                                 <div className="flex flex-wrap gap-x-6 gap-y-4">
                                     {previous.map((g) => (
                                         <Group key={g.id} tier={g.id}>
@@ -102,8 +102,8 @@ export default function SponsorsBand() {
                     </div>
 
                     <div className="flex flex-wrap gap-2 lg:flex-col">
-                        <Link href="/sponsor" className="btn btn-primary h-11 px-5 text-[15px]">Become a sponsor</Link>
-                        <a href={`mailto:${SPONSOR_CONTACT_EMAIL}?subject=Sponsoring%20OpenStock`} className="btn btn-ghost h-11 px-5 text-[15px]">Talk with us</a>
+                        <Link href="/sponsor" className="btn btn-primary h-11 px-5 text-[15px]">成为赞助商</Link>
+                        <a href={`mailto:${SPONSOR_CONTACT_EMAIL}?subject=Sponsoring%20OpenStock`} className="btn btn-ghost h-11 px-5 text-[15px]">联系我们</a>
                     </div>
                 </div>
             </div>
