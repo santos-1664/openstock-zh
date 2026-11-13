@@ -11,7 +11,7 @@ import { SocialProvidersProvider } from "@/components/forms/SocialAuthButtons";
 
 const Layout = async ({ children }: { children : React.ReactNode }) => {
 
-    const session = await getSession();
+    const session = process.env.MONGODB_URI ? await getSession() : null;
 
     if (session?.user) redirect('/dashboard')
 
