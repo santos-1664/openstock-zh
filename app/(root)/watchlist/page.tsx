@@ -3,6 +3,7 @@ import { Plus } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { getUserWatchlist } from '@/lib/actions/watchlist.actions';
 import { getUserAlerts } from '@/lib/actions/alert.actions';
+import { isAlertMonitoring } from '@/lib/alert-conditions';
 import { alertsEnabled } from '@/lib/market-data';
 import { getNews, getWatchlistData } from '@/lib/actions/finnhub.actions';
 import { getWatchlistLists } from '@/lib/actions/watchlist-lists.actions';
@@ -46,7 +47,7 @@ export default async function WatchlistPage({ searchParams }: { searchParams: Pr
         getTranslations('WatchlistPage'),
     ]);
     const symbols: string[] = items.map((item: { symbol: string }) => item.symbol);
-    const activeAlerts = alerts.filter((a: { triggered?: boolean }) => !a.triggered).length;
+    const activeAlerts = alertsEnabled ? alerts.filter((a: Parameters<typeof isAlertMonitoring>[0]) => isAlertMonitoring(a)).length : 0;
     // The selection lives in the URL, so a list is linkable and the table below can be a server component.
     const active = lists.find((list) => list.id === params.list) ?? null;
     const listOptions = lists.map(({ id, name }) => ({ id, name }));
