@@ -522,7 +522,7 @@
     "listsSub": "Group the stocks you watch into named lists"
   },
   "WatchlistTableRow": {
-    "today": "Today",
+    "today": "Daily change",
     "emptyTitle": "Nothing on your watchlist yet",
     "emptyBody": "Search for a company and star it to track its price here and set alerts.",
     "searchStocks": "Search stocks",
@@ -549,7 +549,8 @@
     "until": "until {date}",
     "removeTitle": "Remove alert",
     "removeLabel": "Remove alert for {symbol}",
-    "inAppNote": "In-app alerts: checked every minute while the page is open. Quotes may be cached or delayed. No email or push is sent when the page is closed."
+    "inAppNote": "In-app alerts: checked every minute while the page is open. Quotes may be cached or delayed. No email or push is sent when the page is closed.",
+    "emptyBodyInApp": "Use the bell in a stock row or Set alert on a stock page to receive an in-app notice when the target is reached."
   },
   "CreateAlertModal": {
     "risesAbove": "Rises above",
@@ -606,7 +607,11 @@
     "createdAndAdded": "Created “{list}” and added {symbol}",
     "retryHint": "“{list}” was created — press the button again to retry adding {symbol}.",
     "retryAdd": "Retry add",
-    "createAndAdd": "Create and add"
+    "createAndAdd": "Create and add",
+    "creating": "Creating",
+    "deleting": "Deleting",
+    "created": "Created “{list}”",
+    "deleted": "Deleted “{list}”"
   },
   "AlertMonitor": {
     "triggered": "{symbol} reached your alert target",
