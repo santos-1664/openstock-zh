@@ -63,7 +63,7 @@ export default function AlertsPanel({ alerts }: { alerts: AlertRow[] }) {
             <div className="empty-state py-10">
                 <span className="empty-icon"><BellRing className="size-5" /></span>
                 <h3>{t('emptyTitle')}</h3>
-                <p className="max-w-60 text-[13px]">{t('emptyBody')}</p>
+                <p className="max-w-60 text-[13px]">{t(inAppAlertsEnabled ? 'emptyBodyInApp' : 'emptyBody')}</p>
                 {inAppAlertsEnabled && <p className="mt-2 max-w-72 text-xs text-faint">{t('inAppNote')}</p>}
             </div>
         );
