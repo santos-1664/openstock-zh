@@ -522,7 +522,7 @@
     "listsSub": "将关注的股票整理到不同分组"
   },
   "WatchlistTableRow": {
-    "today": "今日",
+    "today": "日涨跌额",
     "emptyTitle": "暂无自选股",
     "emptyBody": "搜索公司并点击收藏，即可在这里跟踪价格并设置提醒。",
     "searchStocks": "搜索股票",
@@ -549,7 +549,8 @@
     "until": "有效期至 {date}",
     "removeTitle": "移除提醒",
     "removeLabel": "移除 {symbol} 的提醒",
-    "inAppNote": "站内提醒：网页打开时每分钟检查。报价使用缓存，可能延时；关闭网页后不会发送邮件或推送。"
+    "inAppNote": "站内提醒：网页打开时每分钟检查。报价使用缓存，可能延时；关闭网页后不会发送邮件或推送。",
+    "emptyBodyInApp": "点击列表中的铃铛，或在股票页面选择“设置提醒”，达到目标价时将在站内提示。"
   },
   "CreateAlertModal": {
     "risesAbove": "上涨至",
@@ -606,7 +607,11 @@
     "createdAndAdded": "已创建“{list}”并添加 {symbol}",
     "retryHint": "已创建“{list}”，请再次点击按钮重试添加 {symbol}。",
     "retryAdd": "重试添加",
-    "createAndAdd": "创建并添加"
+    "createAndAdd": "创建并添加",
+    "creating": "正在创建",
+    "deleting": "正在删除",
+    "created": "已创建分组“{list}”",
+    "deleted": "已删除分组“{list}”"
   },
   "AlertMonitor": {
     "triggered": "{symbol} 达到提醒条件",
