@@ -5,6 +5,7 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
     devIndicators: false,
+    distDir: process.env.OPENSTOCK_BUILD_DIR || ".next",
     // /whats-new was live briefly before the changelog replaced it
     async redirects() {
         return [{ source: '/whats-new', destination: '/changelog', permanent: true }];
