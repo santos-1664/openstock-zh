@@ -8,14 +8,14 @@ type DataFreshnessLabels = { live: string; delayed: string; asOf: (time: string)
 
 // English for the marketing preview, which renders outside NextIntlClientProvider
 const ENGLISH: DataFreshnessLabels = {
-    live: 'Live · 15s',
-    delayed: 'Delayed · refreshed hourly',
-    asOf: (time) => `As of ${time} · refreshed hourly`,
+    live: '实时 · 每 15 秒更新',
+    delayed: '延时行情 · 每小时更新',
+    asOf: (time) => `截至 ${time} · 每小时更新`,
 };
 
 // Honest label for how old a number is: "Live" in realtime mode, otherwise the time of the last trade.
 // The time is formatted after mount, in the viewer's own time zone, so server and browser never disagree.
-const DataFreshness = ({ tradeTime, locale = 'en-US', labels = ENGLISH }: { tradeTime?: number; locale?: string; labels?: DataFreshnessLabels }) => {
+const DataFreshness = ({ tradeTime, locale = 'zh-CN', labels = ENGLISH }: { tradeTime?: number; locale?: string; labels?: DataFreshnessLabels }) => {
     const [asOf, setAsOf] = useState<string | null>(null);
 
     useEffect(() => {
