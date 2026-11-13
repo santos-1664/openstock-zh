@@ -522,7 +522,7 @@
     "listsSub": "Pogrupuj obserwowane akcje w nazwane listy"
   },
   "WatchlistTableRow": {
-    "today": "Dzisiaj",
+    "today": "Zmiana dzienna",
     "emptyTitle": "Twoja lista obserwowanych jest pusta",
     "emptyBody": "Wyszukaj firmę i oznacz ją gwiazdką, żeby śledzić jej kurs tutaj i ustawić alerty.",
     "searchStocks": "Szukaj akcji",
@@ -549,7 +549,8 @@
     "until": "do {date}",
     "removeTitle": "Usuń alert",
     "removeLabel": "Usuń alert: {symbol}",
-    "inAppNote": "Alerty w aplikacji są sprawdzane co minutę przy otwartej stronie. Notowania mogą być opóźnione. Po zamknięciu strony nie wysyłamy wiadomości e-mail ani powiadomień push."
+    "inAppNote": "Alerty w aplikacji są sprawdzane co minutę przy otwartej stronie. Notowania mogą być opóźnione. Po zamknięciu strony nie wysyłamy wiadomości e-mail ani powiadomień push.",
+    "emptyBodyInApp": "Użyj dzwonka przy akcji lub przycisku Ustaw alert, aby otrzymać powiadomienie w aplikacji po osiągnięciu ceny docelowej."
   },
   "CreateAlertModal": {
     "risesAbove": "Wzrośnie powyżej",
@@ -606,7 +607,11 @@
     "createdAndAdded": "Utworzono listę „{list}” i dodano {symbol}",
     "retryHint": "Lista „{list}” została utworzona — kliknij przycisk jeszcze raz, żeby ponowić dodanie {symbol}.",
     "retryAdd": "Ponów dodanie",
-    "createAndAdd": "Utwórz i dodaj"
+    "createAndAdd": "Utwórz i dodaj",
+    "creating": "Tworzenie",
+    "deleting": "Usuwanie",
+    "created": "Utworzono „{list}”",
+    "deleted": "Usunięto „{list}”"
   },
   "AlertMonitor": {
     "triggered": "{symbol}: osiągnięto cenę docelową",
