@@ -1,5 +1,6 @@
 'use client';
 
+import Link from "next/link";
 import React, { createContext, useContext, useState } from "react";
 import { Github } from "lucide-react";
 import { toast } from "sonner";
@@ -52,10 +53,17 @@ const SocialAuthButtons = () => {
         setPending(null);
     }
 
-    if (providers.length === 0) return null;
+
 
     return (
         <div className="space-y-5 mb-5">
+            {!enabled.includes('google') && <div className="space-y-2">
+                <Button type="button" variant="outline" disabled className="h-12 w-full gap-2 border-gray-600 text-base">
+                    <GoogleIcon />{t('googleContinue')}
+                </Button>
+                <p className="text-sm leading-6 text-muted-foreground">{t('googleUnavailable')}</p>
+                <Link href="/heatmaps" className="inline-flex min-h-11 items-center text-sm text-brand-ink underline underline-offset-4">{t('browseHeatmaps')}</Link>
+            </div>}
             <div className={providers.length > 1 ? 'grid grid-cols-2 gap-3' : 'grid gap-3'}>
                 {providers.map(({ id, label, icon }) => (
                     <Button
@@ -67,7 +75,7 @@ const SocialAuthButtons = () => {
                         className="h-12 border-gray-600 text-gray-400 text-base rounded-lg cursor-pointer"
                     >
                         {icon}
-                        {pending === id ? t('redirecting') : label}
+                        {pending === id ? t('redirecting') : id === 'google' ? t('googleContinue') : label}
                     </Button>
                 ))}
             </div>
