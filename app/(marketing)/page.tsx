@@ -103,7 +103,8 @@ export default async function LandingPage() {
                     <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
                         OpenStock 是昂贵行情平台的开源替代方案。跟踪价格、纵览市场、深入了解公司，为每个人开放构建。</p>
                     <div className="mt-8 flex flex-wrap items-center gap-2">
-                        <Link href={start.href} className="btn btn-primary h-11 px-5 text-[15px]">{start.label}</Link>
+                        <Link href="/heatmaps" className="btn btn-primary h-11 px-5 text-[15px]">查看指数热力图</Link>
+                            <Link href={start.href} className="btn btn-ghost h-11 px-5 text-[15px]">{start.label}</Link>
                         <a href={REPO_URL} target="_blank" rel="noreferrer" className="btn btn-ghost h-11 px-5 text-[15px]">
                             <Github /> 自行部署{repo && <span className="num text-faint">{formatCount(repo.stars)} 星标</span>}
                         </a>
@@ -216,7 +217,8 @@ export default async function LandingPage() {
                             <blockquote className="mt-4 text-[26px] font-semibold leading-snug tracking-[-0.03em] md:text-[30px]">
                                 技术应属于每个人，知识应当开放、免费、触手可及。</blockquote>
                             <div className="mt-8 flex flex-wrap gap-2">
-                                <Link href={start.href} className="btn btn-primary h-11 px-5 text-[15px]">{start.label}</Link>
+                                <Link href="/heatmaps" className="btn btn-primary h-11 px-5 text-[15px]">查看指数热力图</Link>
+                            <Link href={start.href} className="btn btn-ghost h-11 px-5 text-[15px]">{start.label}</Link>
                                 <Link href="/about" className="btn btn-ghost h-11 px-5 text-[15px]">阅读项目宣言</Link>
                             </div>
                         </div>
