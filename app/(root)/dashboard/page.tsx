@@ -19,6 +19,7 @@ import {
 import { MARKETS, MARKET_COOKIE, getMarket, isMarketOpen, marketForCountry } from "@/lib/markets";
 import { getSession } from "@/lib/better-auth/auth";
 import { toMessageKey } from "@/i18n/config";
+import { getMarketDataProvider } from '@/lib/actions/finnhub.actions';
 
 const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
 
@@ -39,7 +40,8 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
     const expandLabels = { fullScreen: tw('fullScreen'), exitFullScreen: tw('exitFullScreen'), exitFullScreenHint: tw('exitFullScreenHint') };
     const open = isMarketOpen(market);
     const native = market.pulse.some((p) => p.finnhub);
-    const pulseSub = native ? t('pulseSubFinnhub') : market.yahoo ? t('pulseSubYahoo') : t('pulseSubTradingView', { feed });
+    const provider = await getMarketDataProvider();
+    const pulseSub = native ? t('pulseSubProvider', { provider }) : market.yahoo ? t('pulseSubYahoo') : t('pulseSubTradingView', { feed });
     const heatmap = market.heatmap === 'stocks'
         ? { script: 'stock-heatmap.js', config: { ...STOCK_HEATMAP_CONFIG, locale: locale === 'zh' ? 'zh_CN' : locale }, title: t('stockHeatmapTitle') }
         : market.heatmap === 'crypto'
