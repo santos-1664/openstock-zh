@@ -1,3 +1,11 @@
+## 热力图与 Google 登录
+
+- [标普 500 与纳斯达克 100 热力图](https://openstock-zh-five.vercel.app/heatmaps)：无需登录，可缩放或全屏查看。
+- Google 登录采用 Better Auth。仅在 OAuth 凭据、MongoDB、会话密钥和认证地址齐备时启用，避免出现无法使用的登录入口。
+- Google Cloud OAuth 类型选择 Web application，授权来源为 `https://openstock-zh-five.vercel.app`，回调 URI 为 `https://openstock-zh-five.vercel.app/api/auth/callback/google`。
+- 在 Vercel 的 Production 环境私密填写 `GOOGLE_CLIENT_ID`、`GOOGLE_CLIENT_SECRET` 和 `MONGODB_URI`。网站认证地址和会话密钥已在 Vercel 配置。
+- 配置后需要重新部署，并实际完成一次 Google 登录才能验收。请勿将 OAuth 密钥或数据库连接字符串提交到 GitHub。
+
 > **线上网站：[https://openstock-zh-five.vercel.app](https://openstock-zh-five.vercel.app)**
 >
 > 已发布中文页面。MongoDB 和 Finnhub 尚未配置，因此账号、自选股持久保存及部分报价功能尚未启用；邮件、AI 摘要也需另行配置。
