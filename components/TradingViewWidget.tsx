@@ -24,10 +24,11 @@ const TradingViewWidget = ({ scriptUrl, config, height = 600, className, allowEx
     useEffect(() => {
         if (!isExpanded) return;
         const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setIsExpanded(false);
+        const previousOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
         window.addEventListener('keydown', onKey);
         return () => {
-            document.body.style.overflow = '';
+            document.body.style.overflow = previousOverflow;
             window.removeEventListener('keydown', onKey);
         };
     }, [isExpanded]);
@@ -46,7 +47,8 @@ const TradingViewWidget = ({ scriptUrl, config, height = 600, className, allowEx
                     <button
                         type="button"
                         onClick={() => setIsExpanded(!isExpanded)}
-                        className={cn("icon-btn absolute top-2 right-2 z-10 bg-card/80", !isExpanded && "opacity-0 group-hover:opacity-100 focus-visible:opacity-100")}
+                        className={cn("icon-btn absolute top-2 right-2 z-10 bg-card/80", !isExpanded && "opacity-100 [@media(hover:hover)]:opacity-0 group-hover:opacity-100 focus-visible:opacity-100")}
+                        aria-expanded={isExpanded}
                         aria-label={isExpanded ? labels.exitFullScreen : labels.fullScreen}
                         title={isExpanded ? labels.exitFullScreenHint : labels.fullScreen}
                     >
