@@ -31,6 +31,7 @@ describe('sendPasswordResetEmail', () => {
         await sendPasswordResetEmail({
             email: 'user@example.com',
             name: '<Admin&Co.>',
+            locale: 'en',
             resetUrl: 'https://example.com/reset-password?token=a b&next=<script>',
         });
 
