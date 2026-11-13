@@ -7,8 +7,8 @@ const ChangePill = ({ value }: { value?: number | null }) => {
     const up = value > 0;
     return (
         <span className={up ? 'pill is-up' : 'pill is-down'}>
-            {up ? <ArrowUpRight /> : <ArrowDownRight />}
-            {Math.abs(value).toFixed(2)}%
+            {up ? <ArrowUpRight aria-hidden="true" /> : <ArrowDownRight aria-hidden="true" />}
+            {up ? '+' : '−'}{Math.abs(value).toFixed(2)}%
         </span>
     );
 };
