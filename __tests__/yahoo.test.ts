@@ -94,6 +94,10 @@ describe('general market quote fallback', () => {
         expect(result).toMatchObject({ price: 110, change: 10, changePercent: 10, previousClose: 100, open: 104, high: 111, low: 103, tradeTime: 1794517200 });
     });
 
+    it('uses a consistent previous-close basis when provider change fields disagree', () => {
+        expect(dailyQuoteFromChart({ chart: { result: [{ meta: { regularMarketPrice: 110, previousClose: 100, fulldayChange: 2, regularMarketChangePercent: 3 }, indicators: { quote: [{ close: [100, 110] }] } }] } })).toMatchObject({ price: 110, change: 10, changePercent: 10, previousClose: 100 });
+    });
+
     it('rejects a zero price and does not render non-finite provider prices', () => {
         expect(dailyQuoteFromChart({ chart: { result: [{ meta: { regularMarketPrice: 0 }, indicators: { quote: [{ close: [1, 2] }] } }] } })).toBeNull();
         expect(dailyQuoteFromChart({ chart: { result: [{ meta: { regularMarketPrice: NaN }, indicators: { quote: [{ close: [10, 11] }] } }] } })?.price).toBe(11);
