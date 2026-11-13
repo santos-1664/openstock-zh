@@ -8,8 +8,8 @@ import { ACTIVE_SPONSORS, PREVIOUS_SPONSORS, SPONSOR_TIERS, SUPPORTERS, type Spo
 import { cn } from "@/lib/utils";
 
 export const metadata = {
-    title: 'Wall of love',
-    description: 'The sponsors and supporters behind OpenStock, and what people write, post and film about it.',
+    title: "社区支持墙",
+    description: "了解 OpenStock 的赞助者、支持者，以及社区分享的文章、动态和视频。",
 };
 
 // Only real posts, videos and articles about OpenStock. X posts render live from X: add the post id, never its text.
@@ -40,7 +40,7 @@ const PRAISE: Praise[] = [
 type WallItem = { name: string; url: string; label: string; logo?: string; iconOnly?: boolean; avatar?: string };
 
 // "Partner", "Company", or "Sponsor" when no tier is recorded
-const tierLabel = (s: Sponsor) => SPONSOR_TIERS.find((t) => t.id === s.tier)?.name ?? 'Sponsor';
+const tierLabel = (s: Sponsor) => SPONSOR_TIERS.find((t) => t.id === s.tier)?.name ?? "赞助支持";
 
 const WALL: WallItem[] = [
     ...ACTIVE_SPONSORS.map((s) => ({ name: s.name, url: s.url, logo: s.logo, iconOnly: s.iconOnly, label: tierLabel(s) })),
@@ -90,8 +90,7 @@ const MarqueeRow = ({ items, reverse }: { items: WallItem[]; reverse?: boolean }
                         className="mr-3 flex h-16 shrink-0 items-center rounded-[14px] px-5 text-[13px] font-semibold text-faint transition-colors hover:text-brand-ink"
                         style={{ backgroundImage: 'repeating-linear-gradient(-45deg, oklch(0.4 0.01 95 / 0.22) 0 1px, transparent 1px 5px)', boxShadow: 'inset 0 0 0 1px var(--line)' }}
                     >
-                        Your name here
-                    </Link>
+                        这里可以展示你的名字</Link>
                 </div>
             ))}
         </div>
@@ -114,7 +113,7 @@ const PraiseCard = ({ praise }: { praise: Praise }) => {
                     </span>
                 </div>
                 <div className="p-5">
-                    <p className="kicker">Video · {praise.channel}</p>
+                    <p className="kicker">视频 ·{praise.channel}</p>
                     <p className="mt-2 text-[17px] font-bold leading-snug tracking-[-0.02em]">{praise.title}</p>
                 </div>
             </div>
@@ -123,10 +122,10 @@ const PraiseCard = ({ praise }: { praise: Praise }) => {
     return (
         <a href={praise.url} target="_blank" rel="noreferrer" className="hatch group mb-3 break-inside-avoid">
             <div className="card flex flex-col gap-3 p-5">
-                <p className="kicker">Article · {praise.source}</p>
+                <p className="kicker">文章 ·{praise.source}</p>
                 <p className="text-[17px] font-bold leading-snug tracking-[-0.02em]">{praise.title}</p>
                 <span className="flex items-center gap-1 text-[13px] font-semibold text-brand-ink">
-                    Read on {praise.source} <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    前往阅读{praise.source} <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </span>
             </div>
         </a>
@@ -137,26 +136,26 @@ export default function LovePage() {
     return (
         <>
             <PageHero
-                kicker="Wall of love"
-                title="Thank you for keeping OpenStock free."
-                sub="The sponsors who pay the bills, the supporters who chip in, and everyone who writes, posts or films something about it."
+                kicker="社区支持墙"
+                title="感谢你让 OpenStock 保持免费。"
+                sub="感谢承担运营费用的赞助者、提供捐助的支持者，以及每一位通过文章、动态或视频介绍项目的朋友。"
             >
-                <Link href="/sponsor" className="btn btn-primary h-11 px-5 text-[15px]">Become a sponsor</Link>
-                <a href={SHARE_URL} target="_blank" rel="noreferrer" className="btn btn-ghost h-11 px-5 text-[15px]">Post about OpenStock</a>
+                <Link href="/sponsor" className="btn btn-primary h-11 px-5 text-[15px]">成为赞助商</Link>
+                <a href={SHARE_URL} target="_blank" rel="noreferrer" className="btn btn-ghost h-11 px-5 text-[15px]">分享 OpenStock</a>
             </PageHero>
 
-            <section className="mt-16 flex flex-col gap-3" aria-label="Sponsors and supporters">
+            <section className="mt-16 flex flex-col gap-3" aria-label="赞助者与支持者">
                 <MarqueeRow items={WALL} />
                 <MarqueeRow items={[...WALL].reverse()} reverse />
             </section>
 
             <section className="love-wall mx-auto mt-24 max-w-[1200px] px-5">
-                <SectionHead kicker="In their words" title="What people say about OpenStock." sub="Posts, videos and write-ups from people who found it, used it and told others." />
+                <SectionHead kicker="用户心声" title="大家如何评价 OpenStock。" sub="来自项目使用者与分享者的动态、视频和文章。" />
                 <div className="columns-1 gap-3 md:columns-2 lg:columns-3">
                     {PRAISE.map((praise) => <PraiseCard key={praise.kind === 'post' ? praise.id : praise.url} praise={praise} />)}
                 </div>
                 <p className="mt-6 text-[14px] text-faint">
-                    Made something about OpenStock? <a href={EDIT_URL} target="_blank" rel="noreferrer" className="font-semibold text-brand-ink hover:underline">Add it to this page</a>.
+                    创作了与 OpenStock 有关的内容？<a href={EDIT_URL} target="_blank" rel="noreferrer" className="font-semibold text-brand-ink hover:underline">将它添加到此页面</a>.
                 </p>
             </section>
         </>
