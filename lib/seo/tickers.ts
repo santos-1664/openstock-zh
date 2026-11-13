@@ -1,3 +1,4 @@
+import { sectorLabel } from '@/i18n/display';
 import file from '@/data/us-tickers.json';
 
 export type IndexId = 'SP500' | 'NDX100';
@@ -18,8 +19,8 @@ export const US_TICKERS: UsTicker[] = file.tickers as UsTicker[];
 const BY_SYMBOL = new Map(US_TICKERS.map((ticker) => [ticker.symbol, ticker]));
 
 const INDEX_LABEL: Record<IndexId, string> = {
-    SP500: 'S&P 500',
-    NDX100: 'Nasdaq-100',
+    SP500: '标普 500',
+    NDX100: '纳斯达克 100',
 };
 
 export function findTicker(raw: string): UsTicker | undefined {
@@ -47,17 +48,10 @@ function exchangePhrase(exchange: string): string {
 }
 
 export function tickerIntro(ticker: UsTicker): string {
-    const place = [exchangePhrase(ticker.exchange), ticker.sector ? `in the ${ticker.sector} sector` : '']
-        .filter(Boolean)
-        .join(', ');
-    const sub = ticker.subIndustry ? ` (${ticker.subIndustry})` : '';
-    const names = ticker.indexes.map((id) => `the ${indexLabel(id)}`);
-    const membership = names.length === 0
-        ? ''
-        : names.length === 1
-            ? ` It is in ${names[0]}.`
-            : ` It is in ${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}.`;
-    return `${ticker.name} (${ticker.symbol}) is ${place}${sub}.${membership} This page shows a TradingView chart for ${ticker.symbol} and the company's recent annual and quarterly reports from the SEC EDGAR database. It does not include a price quote.`;
+    const market = ticker.exchange || '美国市场';
+    const sector = ticker.sector ? `，所属行业为${sectorLabel(ticker.sector)}` : '';
+    const indexes = ticker.indexes.map(indexLabel).join('、');
+    return `${ticker.name}（${ticker.symbol}）在 ${market} 上市${sector}。${indexes ? `属于${indexes}成分股。` : ''}本页提供 ${ticker.symbol} 的 TradingView 图表，以及 SEC EDGAR 中的近期年报和季报，不单独提供价格报价。`;
 }
 
 export function relatedTickers(ticker: UsTicker, limit = 8): UsTicker[] {
