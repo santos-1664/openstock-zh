@@ -1,20 +1,18 @@
 'use server';
 
 import { auth } from "@/lib/better-auth/auth";
-import { inngest } from "@/lib/inngest/client";
 import { headers } from "next/headers";
 import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
 import countryList from "react-select-country-list";
 import { clientIp, isRateLimited } from "@/lib/rate-limit";
 import { getTranslations } from "next-intl/server";
-import { resolveLocale } from "@/i18n/locale";
 
 const isOption = (options: readonly { value: string }[], value: unknown) => options.some((o) => o.value === value);
 const COUNTRY_CODES = new Set(countryList().getValues()); // the same list the sign-up country picker shows
 
 export const signUpWithEmail = async ({ email, password, fullName, country, investmentGoals, riskTolerance, preferredIndustry }: SignUpFormData) => {
     const t = await getTranslations('Errors');
-    // These fields go into the AI prompt for the welcome email, so only accept the form's own values
+    // Only accept profile options offered by the sign-up form.
     if (typeof fullName !== 'string' || !fullName.trim() || fullName.length > 80
         || typeof country !== 'string' || !COUNTRY_CODES.has(country)
         || !isOption(INVESTMENT_GOALS, investmentGoals)
@@ -22,27 +20,12 @@ export const signUpWithEmail = async ({ email, password, fullName, country, inve
         || !isOption(PREFERRED_INDUSTRIES, preferredIndustry)) {
         return { success: false, error: t('signUpFailed') };
     }
-    // Each sign-up sends a welcome email from our Gmail and an AI call
+    // Rate-limit account creation.
     if (await isRateLimited(`sign-up:ip:${await clientIp()}`, 5, 60 * 60)) {
         return { success: false, error: t('tooManyAttempts') };
     }
     try {
         const response = await auth.api.signUpEmail({ body: { email, password, name: fullName, country, investmentGoals, riskTolerance, preferredIndustry } })
-
-        if (response) {
-            try {
-                console.log('📤 Sending Inngest event: app/user.created for', email);
-                await inngest.send({
-                    name: 'app/user.created',
-                    // The welcome email is sent later, outside this request, in the language picked now
-                    data: { email, name: fullName, country, investmentGoals, riskTolerance, preferredIndustry, locale: await resolveLocale() }
-                });
-                console.log('✅ Inngest event sent successfully');
-            } catch (error) {
-                console.error('❌ Failed to send Inngest event:', error);
-                // Don't fail signup if email fails
-            }
-        }
 
         return { success: true, data: response }
     } catch (e) {
