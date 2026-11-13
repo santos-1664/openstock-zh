@@ -21,6 +21,8 @@ import { getSession } from "@/lib/better-auth/auth";
 import { toMessageKey } from "@/i18n/config";
 import { getMarketDataProvider } from '@/lib/actions/finnhub.actions';
 
+import { DATA_MODE } from '@/lib/market-data';
+
 const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
 
 type GroupKey = keyof Messages['Markets']['groups'];
@@ -34,7 +36,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
     const market = getMarket(requested ?? saved ?? marketForCountry((await getSession())?.user.country));
     const [t, tm, tw, locale] = await Promise.all([getTranslations('Dashboard'), getTranslations('Markets'), getTranslations('TradingViewWidget'), getLocale()]);
     const name = tm(`names.${market.id}`);
-    const feed = toMessageKey(market.feed) as FeedKey;
+    const feed = (DATA_MODE !== 'realtime' && market.pulse.some((p) => p.finnhub) ? 'delayed' : toMessageKey(market.feed)) as FeedKey;
     // Translated tab and group titles inside the TradingView widgets
     const groups = market.groups.map((g) => ({ ...g, title: tm(`groups.${toMessageKey(g.title) as GroupKey}`) }));
     const expandLabels = { fullScreen: tw('fullScreen'), exitFullScreen: tw('exitFullScreen'), exitFullScreenHint: tw('exitFullScreenHint') };
