@@ -178,7 +178,10 @@
     "signInFailed": "تعذّر تسجيل الدخول",
     "connectionError": "تحقّق من اتصالك وحاول مرة أخرى.",
     "redirecting": "جارٍ التحويل…",
-    "or": "أو"
+    "or": "أو",
+    "googleContinue": "المتابعة باستخدام Google",
+    "googleUnavailable": "تسجيل الدخول عبر Google غير متاح بعد. يمكنك تصفح خرائط السوق العامة.",
+    "browseHeatmaps": "تصفح خرائط السوق"
   },
   "CountrySelect": {
     "placeholder": "اختر بلدك…",
