@@ -8,6 +8,8 @@ export interface IAlert extends Document {
     condition: 'ABOVE' | 'BELOW';
     active: boolean;
     triggered: boolean;
+    triggeredAt?: Date;
+    triggerPrice?: number;
     expiresAt: Date;
     createdAt: Date;
 }
@@ -20,6 +22,8 @@ const AlertSchema = new Schema<IAlert>(
         condition: { type: String, enum: ['ABOVE', 'BELOW'], required: true },
         active: { type: Boolean, default: true },
         triggered: { type: Boolean, default: false },
+        triggeredAt: Date,
+        triggerPrice: Number,
         expiresAt: {
             type: Date,
             default: () => new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
