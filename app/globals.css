@@ -871,3 +871,8 @@ html[dir="rtl"] .num,
 html[dir="rtl"] .mono {
     unicode-bidi: plaintext;
 }
+
+/* Room for fingers on touch screens, while retaining compact desktop toolbars. */
+@media (pointer: coarse) {
+    .icon-btn { min-width: 44px; min-height: 44px; }
+}
