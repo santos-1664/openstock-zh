@@ -1,3 +1,4 @@
+import { isGoogleSignInReady } from '@/lib/auth-readiness';
 import { betterAuth } from "better-auth";
 import {mongodbAdapter} from "better-auth/adapters/mongodb";
 import {connectToDatabase, isWorkersRuntime} from "@/database/mongoose";
@@ -13,7 +14,7 @@ type MongoDb = Parameters<typeof mongodbAdapter>[0];
 // Typed from the real config, so additional user fields (country, ...) show up in session types
 const createAuth = (database: MongoDb) => betterAuth({
         database: mongodbAdapter(database),
-       secret: process.env.BETTER_AUTH_SECRET,
+       secret: process.env.BETTER_AUTH_SECRET || process.env.AUTH_SECRET,
         baseURL: process.env.BETTER_AUTH_URL,
         // Onboarding answers live on the user so the profile page can show and edit them
         user: {
@@ -61,7 +62,10 @@ const createAuth = (database: MongoDb) => betterAuth({
         // Providers stay disabled until their env vars are set
         socialProviders: {
             google: {
-                enabled: !!process.env.GOOGLE_CLIENT_ID,
+                enabled: isGoogleSignInReady(),
+                prompt: "select_account",
+                accessType: "online",
+                includeGrantedScopes: false,
                 clientId: process.env.GOOGLE_CLIENT_ID as string,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
             },
