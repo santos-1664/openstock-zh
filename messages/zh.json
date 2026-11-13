@@ -178,7 +178,10 @@
     "signInFailed": "登录失败",
     "connectionError": "请检查网络连接后重试。",
     "redirecting": "正在跳转",
-    "or": "或"
+    "or": "或",
+    "googleContinue": "使用 Google 登录",
+    "googleUnavailable": "Google 登录暂未开通，你可以先浏览公开的市场热力图。",
+    "browseHeatmaps": "查看市场热力图"
   },
   "CountrySelect": {
     "placeholder": "选择国家或地区…",
