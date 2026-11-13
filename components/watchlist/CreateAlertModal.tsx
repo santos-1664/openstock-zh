@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { createAlert } from "@/lib/actions/alert.actions";
-import { alertsEnabled } from "@/lib/market-data";
+import { alertsEnabled, inAppAlertsEnabled } from "@/lib/market-data";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useRouter } from 'next/navigation';
 
 interface CreateAlertModalProps {
     symbol: string;
@@ -25,6 +26,7 @@ const CONDITIONS = [
 
 export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD', children, onAlertCreated }: CreateAlertModalProps) {
     const t = useTranslations('CreateAlertModal');
+    const router = useRouter();
     const [open, setOpen] = useState(false);
     const [condition, setCondition] = useState<'ABOVE' | 'BELOW'>('ABOVE');
     const [targetPrice, setTargetPrice] = useState('');
@@ -47,6 +49,8 @@ export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD
             await createAlert({ symbol, targetPrice: target, condition });
             toast.success(t('created', { symbol, condition, price: formatPrice(target, currency) }));
             setOpen(false);
+            router.refresh();
+            window.dispatchEvent(new Event('openstock:check-alerts'));
             onAlertCreated?.();
         } catch (error) {
             console.error(error);
@@ -66,7 +70,7 @@ export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD
                             <p className="kicker text-brand-ink">{t('kicker')}</p>
                             <DialogTitle className="mt-1 text-xl font-bold tracking-tight mono">{symbol}</DialogTitle>
                             <DialogDescription className="mt-1 text-[13px] text-faint">
-                                {t('description')}
+                                {t(inAppAlertsEnabled ? 'descriptionInApp' : 'description')}
                             </DialogDescription>
                         </div>
 
