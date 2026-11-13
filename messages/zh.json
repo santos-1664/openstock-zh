@@ -246,7 +246,8 @@
     "quotesTitle": "行情报价",
     "quotesSub": "{market}各行业主要公司",
     "storiesTitle": "市场要闻",
-    "storiesSub": "按最新时间排序"
+    "storiesSub": "按最新时间排序",
+    "pulseSubProvider": "以 ETF 跟踪指数 · 报价来自 {provider}"
   },
   "MarketSwitcher": {
     "label": "市场",
@@ -260,7 +261,9 @@
   "DataFreshness": {
     "live": "实时 · 每 15 秒更新",
     "asOf": "截至 {time} · 每小时更新",
-    "delayed": "延时行情 · 每小时更新"
+    "delayed": "延时行情 · 每小时更新",
+    "delayedFiveMinutes": "延时行情 · 5 分钟缓存",
+    "asOfFiveMinutes": "截至 {time} · 5 分钟缓存"
   },
   "YahooQuotes": {
     "changePercent": "涨跌幅",
@@ -400,7 +403,9 @@
     "addFailed": "无法添加该股票代码",
     "addTitle": "将 {symbol} 添加到 {list}",
     "add": "添加",
-    "adding": "正在添加"
+    "adding": "正在添加",
+    "loadFailed": "行情搜索暂时不可用，请重试。",
+    "retry": "重新搜索"
   },
   "UpdateBanner": {
     "new": "更新",
@@ -511,7 +516,7 @@
     "newsSubWatched": "你关注股票的最新新闻",
     "newsSubGeneral": "市场综合新闻",
     "alertsTitle": "价格提醒",
-    "alertsSubActive": "{count} 个生效中 · 每 5 分钟检查",
+    "alertsSubActive": "{count} 条监控中 · 网页打开时每分钟检查",
     "alertsSubCloud": "OpenStock Cloud 功能",
     "listsTitle": "我的分组",
     "listsSub": "将关注的股票整理到不同分组"
@@ -543,7 +548,8 @@
     "below": "低于 {price}",
     "until": "有效期至 {date}",
     "removeTitle": "移除提醒",
-    "removeLabel": "移除 {symbol} 的提醒"
+    "removeLabel": "移除 {symbol} 的提醒",
+    "inAppNote": "站内提醒：网页打开时每分钟检查。报价使用缓存，可能延时；关闭网页后不会发送邮件或推送。"
   },
   "CreateAlertModal": {
     "risesAbove": "上涨至",
@@ -563,7 +569,8 @@
     "cloudTitle": "Cloud 提供价格提醒",
     "cloudBody": "Cloud 提供邮件价格提醒和实时行情，每月 5 美元，即将上线。自行部署现在即可使用这两项功能。",
     "seeCloud": "了解 OpenStock Cloud",
-    "selfHost": "自行部署"
+    "selfHost": "自行部署",
+    "descriptionInApp": "达到目标价时在站内提示。保持网页打开，每分钟检查；报价可能存在延时。当前不发送邮件。"
   },
   "NewsList": {
     "emptyTitle": "暂无近期新闻",
@@ -600,5 +607,16 @@
     "retryHint": "已创建“{list}”，请再次点击按钮重试添加 {symbol}。",
     "retryAdd": "重试添加",
     "createAndAdd": "创建并添加"
+  },
+  "AlertMonitor": {
+    "triggered": "{symbol} 达到提醒条件",
+    "price": "当前报价 {price}，目标价 {target}",
+    "checkFailed": "价格提醒暂时无法检查，稍后将自动重试。"
+  },
+  "AppFeedback": {
+    "loading": "正在加载，请稍候…",
+    "errorTitle": "页面暂时无法加载",
+    "errorBody": "数据服务可能暂时不可用，请点击重试。",
+    "retry": "重新加载"
   }
 }
