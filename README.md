@@ -1,3 +1,24 @@
+# OpenStock 简体中文版
+
+基于 [Open-Dev-Society/OpenStock](https://github.com/Open-Dev-Society/OpenStock) 的中文版本，保留原项目 AGPL-3.0 许可证及贡献者署名。
+
+默认简体中文，覆盖应用界面、公开页面、帮助、指南、更新日志与邮件模板。股票代码、品牌名和第三方新闻保留原文。
+
+## 部署配置
+
+- Node.js 22；安装：`npm ci`；构建：`npm run build`。
+- Vercel 可从此 GitHub 仓库部署，使用默认提供的 HTTPS 域名。
+- 账号与自选股需要 `MONGODB_URI`、`BETTER_AUTH_SECRET` 和 `BETTER_AUTH_URL`。
+- 行情报价需要 `FINNHUB_API_KEY` 或 `FINNHUB_API_KEYS`；TradingView 图表可独立加载。
+- 邮件、后台任务和 AI 摘要还需配置相应服务，参见下方原项目说明及 `.env.example`。
+- 所有密钥请放入部署平台的环境变量，不要提交到 GitHub。
+- `/local-preview` 仅用于本地开发，生产环境不可访问。
+- 容器发布工作流仅允许手动触发，不会向上游组织的镜像仓库发布。
+
+---
+
+## 原项目说明
+
 
 
 <p align="center"><sub><a href="#sponsors">SPONSORED BY</a></sub></p>
