@@ -1,3 +1,9 @@
+> **线上网站：[https://openstock-zh-five.vercel.app](https://openstock-zh-five.vercel.app)**
+>
+> 已发布中文页面。MongoDB 和 Finnhub 尚未配置，因此账号、自选股持久保存及部分报价功能尚未启用；邮件、AI 摘要也需另行配置。
+>
+> 当前使用 Vercel 直接源码部署。Vercel 与本 GitHub 仓库尚未建立自动部署授权，推送代码不会自动更新线上版本。
+
 # OpenStock 简体中文版
 
 基于 [Open-Dev-Society/OpenStock](https://github.com/Open-Dev-Society/OpenStock) 的中文版本，保留原项目 AGPL-3.0 许可证及贡献者署名。
