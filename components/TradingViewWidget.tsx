@@ -15,7 +15,7 @@ interface TradingViewWidgetProps {
     labels?: { fullScreen: string; exitFullScreen: string; exitFullScreenHint: string };
 }
 
-const ENGLISH = { fullScreen: 'Full screen', exitFullScreen: 'Exit full screen', exitFullScreenHint: 'Exit full screen (Esc)' };
+const ENGLISH = { fullScreen: '全屏', exitFullScreen: '退出全屏', exitFullScreenHint: '退出全屏（Esc）' };
 
 // Fullscreen resizes the same element in place: moving or re-creating the embed would reset the chart.
 const TradingViewWidget = ({ scriptUrl, config, height = 600, className, allowExpand = false, labels = ENGLISH }: TradingViewWidgetProps) => {
