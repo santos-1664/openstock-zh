@@ -10,6 +10,10 @@
  * Up/down share one lightness (0.70) and chroma % so neither shouts louder.
  */
 :root {
+    /* System stacks keep production builds independent of external font downloads. */
+    --font-jakarta: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-plex-mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
+    --font-arabic: "Noto Sans Arabic", Tahoma, Arial, sans-serif;
     --page:        oklch(0.13 0.006 95);    /* near-black behind the floated app */
     --side:        oklch(0.165 0.007 95);   /* sidebar + tab chrome */
     --frame:       oklch(0.185 0.007 95);   /* hatch shell frame (recessed) */
