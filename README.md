@@ -8,7 +8,9 @@
 
 > **线上网站：[https://openstock-zh-five.vercel.app](https://openstock-zh-five.vercel.app)**
 >
-> 已发布中文页面。MongoDB 和 Finnhub 尚未配置，因此账号、自选股持久保存及部分报价功能尚未启用；邮件、AI 摘要也需另行配置。
+> 已发布中文页面、标普 500 与纳斯达克 100 热力图，并配置 MongoDB Atlas Free 和 Google 登录。2026 年 11 月 13 日已验证个人 Google 账号登录、返回仪表盘及刷新后的登录状态保留。
+>
+> Google OAuth 当前处于 Testing 模式，仅已添加的测试账号可登录。Finnhub 尚未配置，部分报价和搜索功能仍不可用；邮件和 AI 摘要也需另行配置。
 >
 > 当前使用 Vercel 直接源码部署。Vercel 与本 GitHub 仓库尚未建立自动部署授权，推送代码不会自动更新线上版本。
 
