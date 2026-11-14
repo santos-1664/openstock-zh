@@ -70,7 +70,7 @@ export default async function StockHeader({ symbol }: { symbol: string }) {
     ]);
     const quote = quotes[symbol];
 
-    const currency = profile?.currency || 'USD';
+    const currency = quote?.currency || profile?.currency || 'USD';
     const company = profile?.name || symbol;
     const money = (value?: number) => (value ? formatPrice(value, currency) : '—');
 
@@ -78,7 +78,7 @@ export default async function StockHeader({ symbol }: { symbol: string }) {
         { label: t('open'), icon: CalendarClock, value: money(quote?.o), hint: t('openHint') },
         { label: t('dayRange'), icon: MoveVertical, value: quote?.l && quote?.h ? `${money(quote.l)} – ${money(quote.h)}` : '—', hint: t('dayRangeHint') },
         { label: t('prevClose'), icon: Gauge, value: money(quote?.pc), hint: t('prevCloseHint') },
-        { label: t('marketCap'), icon: Landmark, value: profile?.marketCapitalization ? formatNumber(profile.marketCapitalization) : '—', hint: currency },
+        ...(profile?.marketCapitalization ? [{ label: t('marketCap'), icon: Landmark, value: formatNumber(profile.marketCapitalization), hint: currency }] : []),
     ];
 
     return (
@@ -110,7 +110,7 @@ export default async function StockHeader({ symbol }: { symbol: string }) {
 
             <div className="bento mt-[3px]">
                 {stats.map(({ label, icon: Icon, value, hint }) => (
-                    <div key={label} className="bento-tile gap-2.5">
+                    <div key={label} className={`bento-tile gap-2.5 ${stats.length === 3 ? '!col-span-4 max-lg:!col-span-12' : ''}`}>
                         <div className="bento-head"><span className="bento-ico"><Icon /></span>{label}</div>
                         <p className="num truncate text-[17px] font-bold tracking-[-0.02em]">{value}</p>
                         <p className="text-[12px] text-faint">{hint}</p>
