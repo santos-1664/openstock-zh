@@ -16,13 +16,10 @@ const createAuth = (database: MongoDb) => betterAuth({
         database: mongodbAdapter(database),
        secret: process.env.BETTER_AUTH_SECRET || process.env.AUTH_SECRET,
         baseURL: process.env.BETTER_AUTH_URL,
-        // Onboarding answers live on the user so the profile page can show and edit them
+        // Only collect the market region; historical preference fields remain untouched in MongoDB.
         user: {
             additionalFields: {
                 country: { type: "string", required: false },
-                investmentGoals: { type: "string", required: false },
-                riskTolerance: { type: "string", required: false },
-                preferredIndustry: { type: "string", required: false },
             },
         },
         emailAndPassword: {
