@@ -1,5 +1,6 @@
 'use server';
 
+import { unstable_cache } from 'next/cache';
 import { QUOTE_TTL_SECONDS } from '@/lib/market-data';
 import { dailyQuoteFromChart, normalizeYahooQuoteSymbol, yahooCurrency, type YahooDailyQuote } from '@/lib/yahoo';
 
@@ -12,22 +13,19 @@ async function withSlot<T>(work: () => Promise<T>): Promise<T> {
     active++;
     try { return await work(); } finally { active--; waiting.shift()?.(); }
 }
+const cachedQuote = unstable_cache(async (symbol: string) => withSlot(async () => {
+    const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=5d`, {
+        headers: { 'User-Agent': 'Mozilla/5.0' }, cache: 'no-store', signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) throw new Error(`Quote unavailable (${res.status})`);
+    const quote = dailyQuoteFromChart(await res.json(), yahooCurrency(symbol));
+    if (!quote) throw new Error('Invalid quote');
+    return { ...quote, receivedAt: Date.now() };
+}), ['yahoo-verified-quote-v1'], { revalidate: Math.max(QUOTE_TTL_SECONDS, 300) });
 function quoteFor(symbol: string): Promise<YahooDailyQuote | null> {
     const existing = pending.get(symbol);
     if (existing) return existing;
-    const job = withSlot(async () => {
-        try {
-            const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=5d`, {
-                headers: { 'User-Agent': 'Mozilla/5.0' },
-                next: { revalidate: Math.max(QUOTE_TTL_SECONDS, 300) },
-                signal: AbortSignal.timeout(5000),
-            });
-            if (!res.ok) return null;
-            return dailyQuoteFromChart(await res.json(), yahooCurrency(symbol));
-        } catch {
-            return null;
-        }
-    }).finally(() => pending.delete(symbol));
+    const job = cachedQuote(symbol).catch(() => null).finally(() => pending.delete(symbol));
     pending.set(symbol, job);
     return job;
 }
