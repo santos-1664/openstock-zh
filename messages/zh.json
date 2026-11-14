@@ -134,8 +134,8 @@
     "fullNameRequired": "请输入姓名",
     "passwordLabel": "密码",
     "passwordPlaceholder": "至少 8 个字符",
-    "personalize": "个性化设置",
-    "personalizeHint": "用于保存个人偏好。",
+    "personalize": "市场地区",
+    "personalizeHint": "用于显示你所在地区的市场信息。",
     "submit": "创建账号",
     "submitting": "正在创建账号",
     "haveAccount": "已有账号？",
@@ -198,7 +198,7 @@
     "statPausedAlerts": "暂停提醒",
     "statSignInMethods": "登录方式",
     "detailsTitle": "个人信息",
-    "detailsSub": "设置姓名、地区与个人偏好",
+    "detailsSub": "更新你的姓名和市场地区。",
     "signInMethodsTitle": "登录方式",
     "signInMethodsSub": "可用于登录此账号的方式",
     "methodCredential": "邮箱与密码",
@@ -636,7 +636,7 @@
     "unavailable": "暂时无法获取历史日线，请稍后重试。",
     "retry": "重试",
     "range": "统计区间（日线）",
-    "days": "{count}日",
+    "days": "{count} 根日线",
     "coverage": "{count} 根日线",
     "shortHistory": "历史不足，当前展示 {count} 根有效日线。",
     "high": "阶段高点",
@@ -674,6 +674,19 @@
     "momentum": "动量",
     "volatility": "波动",
     "clean": "清空指标",
-    "settingsHint": "本站周期按钮与指标选择按股票保存在当前浏览器。切换会重载图表，图内手动画线不会保存。"
+    "settingsHint": "本站周期按钮与指标选择按股票保存在当前浏览器。切换会重载图表，图内手动画线不会保存。",
+    "dailyBasis": "以下统计始终基于日线，独立于主图的日／周／月周期。"
+  },
+  "QuoteHealth": {
+    "failed": "刷新失败，保留上次报价；过期数据不用于触发提醒。",
+    "stale": "报价缺失或已过期，暂不用于触发提醒。",
+    "retry": "重试"
+  },
+  "StockWorkspace": {
+    "label": "股票详情",
+    "chart": "图表",
+    "study": "看盘统计",
+    "company": "公司与财务",
+    "technicals": "技术分析"
   }
 }
