@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import HtmlLang from "@/components/HtmlLang";
 import AppShell from "@/components/shell/AppShell";
+import { getActiveAlertCount } from '@/lib/actions/alert.actions';
 import AlertMonitor from '@/components/AlertMonitor';
 import { searchStocks } from "@/lib/actions/finnhub.actions";
 import { getUserWatchlist } from "@/lib/actions/watchlist.actions";
@@ -19,10 +20,11 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
         email: session.user.email,
     }
 
-    const [initialStocks, watchlist, locale] = await Promise.all([
+    const [initialStocks, watchlist, locale, alertCount] = await Promise.all([
         searchStocks(),
         getUserWatchlist(),
         getLocale(),
+        getActiveAlertCount(),
     ]);
 
     return (
@@ -35,7 +37,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
             >
                 {children}
             </AppShell>
-            <AlertMonitor />
+            <AlertMonitor initialCount={alertCount} />
         </NextIntlClientProvider>
     )
 }
