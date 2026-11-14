@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { isAlertConditionMet, isAlertMonitoring } from '@/lib/alert-conditions';
 
 const now = Date.parse('2026-11-13T12:00:00Z');
-const quote = (c: number) => ({ c, t: now / 1000 });
+const quote = (c: number) => ({ c, t: now / 1000, receivedAt: now });
 
 describe('in-app alert conditions', () => {
     it('includes exact target matches in both directions', () => {
