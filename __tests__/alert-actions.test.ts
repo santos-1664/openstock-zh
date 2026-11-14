@@ -96,6 +96,6 @@ describe('createAlert validates untrusted input', () => {
 
     it('stores only validated fields, so callers cannot pre-trigger or extend an alert', async () => {
         await createAlert({ symbol: ' brk.b ', targetPrice: 400, condition: 'BELOW', triggered: true, expiresAt: new Date(2100, 0) } as never);
-        expect(create).toHaveBeenCalledWith({ userId: 'user-123', symbol: 'BRK.B', targetPrice: 400, condition: 'BELOW', active: true });
+        expect(create).toHaveBeenCalledWith({ userId: 'user-123', symbol: 'BRK.B', targetPrice: 400, condition: 'BELOW', currency: 'USD', active: true });
     });
 });
