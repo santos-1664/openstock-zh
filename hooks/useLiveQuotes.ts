@@ -1,37 +1,12 @@
 'use client';
+import { useCallback, useSyncExternalStore } from 'react';
+import { quoteStore } from '@/lib/quote-store';
+export type { LiveQuote } from '@/lib/quote-health';
 
-import { useEffect, useState } from "react";
-import { DATA_MODE, isRealtime } from "@/lib/market-data";
-
-export type LiveQuote = { c?: number; d?: number; dp?: number; h?: number; l?: number; o?: number; pc?: number; t?: number; source?: 'Finnhub' | 'Yahoo Finance' };
-
-// Realtime mode only: polls the shared /api/quotes cache while the tab is visible.
-// In cached mode prices come from the server render and refresh hourly for everyone.
-export function useLiveQuotes(symbols: string[], intervalMs = 15_000) {
-    const [quotes, setQuotes] = useState<Record<string, LiveQuote | null>>({});
-    const key = symbols.join(",");
-
-    useEffect(() => {
-        if (!key || DATA_MODE === 'cached') return;
-        let cancelled = false;
-
-        const load = async () => {
-            if (document.visibilityState !== "visible") return;
-            try {
-                const res = await fetch(`/api/quotes?symbols=${encodeURIComponent(key)}`);
-                if (res.ok && !cancelled) setQuotes(await res.json());
-            } catch { /* keep the last good prices */ }
-        };
-        const onVisibility = () => { if (document.visibilityState === "visible") load(); };
-
-        const interval = setInterval(load, isRealtime ? intervalMs : 60_000);
-        document.addEventListener("visibilitychange", onVisibility);
-        return () => {
-            cancelled = true;
-            clearInterval(interval);
-            document.removeEventListener("visibilitychange", onVisibility);
-        };
-    }, [key, intervalMs]);
-
-    return quotes;
+export function useQuoteFeed(symbols: string[]) {
+    const key = [...new Set(symbols)].sort().join(',');
+    const subscribe = useCallback((listener: () => void) => quoteStore.subscribe(key ? key.split(',') : [], listener), [key]);
+    const snapshot = useSyncExternalStore(subscribe, quoteStore.getSnapshot, quoteStore.getServerSnapshot);
+    return { ...snapshot, refresh: () => quoteStore.refresh(key.split(',')) };
 }
+export function useLiveQuotes(symbols: string[]) { return useQuoteFeed(symbols).quotes; }
