@@ -106,6 +106,7 @@ export default function ChartStudy({ symbol, initialData }: { symbol: string; in
                 {STUDY_WINDOWS.map(count => <button key={count} type="button" className={`pill min-h-11 sm:min-h-9 px-3 ${window === count ? 'is-brand' : ''}`} aria-pressed={window === count} onClick={() => setWindow(count)}>{t('days', { count })}</button>)}
                 <span className="ms-auto text-xs text-faint">{t('coverage', { count: summary.count })}</span>
             </div>
+            <p className="text-xs leading-6 text-faint">{t('dailyBasis')}<br /><span className="mono">{summary.start} — {summary.latest.date} · {data.stock.timezone}</span></p>
             {summary.count < window && <p className="text-xs text-warn">{t('shortHistory', { count: summary.count })}</p>}
             <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-xl border border-line p-3"><p className="text-xs text-faint">{t('high')}</p><p className="mt-2 num text-xl font-semibold">{money(summary.high.high)}</p>
