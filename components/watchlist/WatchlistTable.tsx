@@ -1,5 +1,6 @@
 "use client";
 
+import QuoteHealth from '@/components/QuoteHealth';
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Bell, Search, Star } from "lucide-react";
@@ -29,7 +30,7 @@ export default function WatchlistTable({ initialRows, lists = [] }: { initialRow
 
     const rows = baseRows.map((r) => {
         const q = live[r.symbol];
-        return q?.c ? { ...r, price: q.c, change: q.d ?? r.change, changePercent: q.dp ?? r.changePercent } : r;
+        return q?.c ? { ...r, price: q.c, currency: q.currency ?? r.currency, change: q.d ?? r.change, changePercent: q.dp ?? r.changePercent } : r;
     });
 
     if (rows.length === 0) {
@@ -49,7 +50,7 @@ export default function WatchlistTable({ initialRows, lists = [] }: { initialRow
     }
 
     return (
-        <div className="overflow-x-auto rounded-[14px]">
+        <div><div className="px-3"><QuoteHealth symbols={rows.map(r => r.symbol)} initial={Object.fromEntries(rows.map(r => [r.symbol, r.quote ?? null]))} /></div><div className="overflow-x-auto rounded-[14px]">
             <table className="data-table">
                 <thead>
                     <tr>
@@ -110,6 +111,6 @@ export default function WatchlistTable({ initialRows, lists = [] }: { initialRow
                     ))}
                 </tbody>
             </table>
-        </div>
+        </div></div>
     );
 }
