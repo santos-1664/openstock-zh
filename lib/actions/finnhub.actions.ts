@@ -3,6 +3,7 @@
 import { getDateRange, validateArticle, formatArticle } from '@/lib/utils';
 import { POPULAR_STOCKS } from '@/lib/constants';
 import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 import { QUOTE_TTL_SECONDS } from '@/lib/market-data';
 import { hasFinnhubCompanyData, hasFinnhubQuotes } from '@/lib/markets';
 import { getYahooDailyQuotes, getYahooNews, searchYahooStocks } from '@/lib/actions/yahoo.actions';
@@ -36,6 +37,8 @@ const LIVE_QUOTE_TTL = QUOTE_TTL_SECONDS;
 const SHARED_CACHE_MIN_TTL = 60;
 
 type FinnhubQuote = {
+    currency?: string;
+    receivedAt?: number;
     source?: 'Finnhub' | 'Yahoo Finance';
     c?: number;  // current
     d?: number;  // change
@@ -179,18 +182,23 @@ function getExchangeLabel(symbol: string, exchange?: string) {
     return FINNHUB_EXCHANGE_SUFFIXES.has(suffix) ? suffix : 'US';
 }
 
+const cachedFinnhubQuote = unstable_cache(async (symbol: string) => {
+    const quote = await request<FinnhubQuote>(`${FINNHUB_BASE_URL}/quote?symbol=${encodeURIComponent(symbol)}`, 0);
+    if (!quote?.c || quote.c <= 0) throw new Error('Invalid quote');
+    return { ...quote, currency: 'USD', receivedAt: Date.now(), source: 'Finnhub' as const };
+}, ['finnhub-verified-quote-v1'], { revalidate: QUOTE_TTL_SECONDS });
+
 export async function getQuote(symbol: string, revalidateSeconds = 0) {
     symbol = String(symbol).trim().toUpperCase();
     const yahooQuote = async (): Promise<FinnhubQuote | null> => {
         const q = (await getYahooDailyQuotes([symbol]))[symbol];
         return q ? { c: q.price, d: q.change, dp: q.changePercent, o: q.open, h: q.high, l: q.low,
-            pc: q.previousClose, t: q.tradeTime, source: 'Yahoo Finance' } : null;
+            pc: q.previousClose, t: q.tradeTime, currency: q.currency, receivedAt: q.receivedAt, source: 'Yahoo Finance' } : null;
     };
     if (!FINNHUB_KEYS.length || !hasFinnhubQuotes(symbol)) return yahooQuote();
     try {
-        const url = `${FINNHUB_BASE_URL}/quote?symbol=${encodeURIComponent(symbol)}`;
-        // Real-time by default; shared views pass a short cache to stay inside Finnhub's 60 req/min
-        const quote = await fetchJSON<FinnhubQuote>(url, revalidateSeconds);
+        void revalidateSeconds;
+        const quote = await cachedFinnhubQuote(symbol);
         return quote?.c && quote.c > 0 ? { ...quote, source: 'Finnhub' as const } : yahooQuote();
     } catch (e) {
         logFailure('quote', symbol, e);
@@ -249,7 +257,7 @@ export async function getWatchlistData(symbols: string[]) {
     // Fetch quotes and profiles in parallel
     const promises = symbols.map(async (sym) => {
         const y = yahoo[sym];
-        if (y) return { symbol: sym, price: y.price, change: y.change, changePercent: y.changePercent, currency: y.currency, name: y.name || sym, logo: undefined, marketCap: undefined, peRatio: 0 };
+        if (y) return { symbol: sym, price: y.price, change: y.change, changePercent: y.changePercent, currency: y.currency, quote: { c: y.price, d: y.change, dp: y.changePercent, t: y.tradeTime, receivedAt: y.receivedAt, currency: y.currency, source: 'Yahoo Finance' as const }, name: y.name || sym, logo: undefined, marketCap: undefined, peRatio: 0 };
         const covered = hasFinnhubQuotes(sym);
         const [quote, profile] = covered
             ? await Promise.all([getQuote(sym, LIVE_QUOTE_TTL), getCompanyProfile(sym)])
@@ -264,6 +272,7 @@ export async function getWatchlistData(symbols: string[]) {
             name: profile?.name || sym,
             logo: profile?.logo,
             marketCap: profile?.marketCapitalization,
+            quote,
             peRatio: 0 // Finnhub 'quote' and 'profile2' don't easily give real-time PE. Might need 'metric' endpoint, but skipping for now to save rate limits.
         };
     });
