@@ -134,8 +134,8 @@
     "fullNameRequired": "Full name is required",
     "passwordLabel": "Password",
     "passwordPlaceholder": "At least 8 characters",
-    "personalize": "Personalize",
-    "personalizeHint": "Save your personal preferences.",
+    "personalize": "Market region",
+    "personalizeHint": "Used to show market information for your region.",
     "submit": "Create account",
     "submitting": "Creating account",
     "haveAccount": "Already have an account?",
@@ -198,7 +198,7 @@
     "statPausedAlerts": "Paused alerts",
     "statSignInMethods": "Sign-in methods",
     "detailsTitle": "Details",
-    "detailsSub": "Set your name, country and personal preferences",
+    "detailsSub": "Update your name and market region.",
     "signInMethodsTitle": "Sign-in methods",
     "signInMethodsSub": "Ways you can get into this account",
     "methodCredential": "Email and password",
@@ -636,7 +636,7 @@
     "unavailable": "Daily history is temporarily unavailable. Please try again.",
     "retry": "Retry",
     "range": "Daily-bar window",
-    "days": "{count} bars",
+    "days": "{count} daily bars",
     "coverage": "{count} daily bars",
     "shortHistory": "Limited history: showing {count} available daily bars.",
     "high": "Period high",
@@ -674,6 +674,19 @@
     "momentum": "Momentum",
     "volatility": "Volatility",
     "clean": "Clear indicators",
-    "settingsHint": "These interval buttons and indicator selections are saved per stock in this browser. Changes reload the chart; drawings inside the chart are not saved."
+    "settingsHint": "These interval buttons and indicator selections are saved per stock in this browser. Changes reload the chart; drawings inside the chart are not saved.",
+    "dailyBasis": "These statistics always use daily bars, independently of the chart timeframe."
+  },
+  "QuoteHealth": {
+    "failed": "Refresh failed; showing the last quote. Stale data cannot trigger alerts.",
+    "stale": "Quote unavailable or stale; alert triggering is paused for this data.",
+    "retry": "Retry"
+  },
+  "StockWorkspace": {
+    "label": "Stock details",
+    "chart": "Chart",
+    "study": "Daily studies",
+    "company": "Company & financials",
+    "technicals": "Technical analysis"
   }
 }
