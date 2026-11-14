@@ -1,5 +1,6 @@
 'use client';
 
+import QuoteHealth from "@/components/QuoteHealth";
 import Link from "next/link";
 import { LineChart } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -24,7 +25,7 @@ export default function PulseTile({ symbol, label, initial, labels = ENGLISH }: 
     const isCrypto = symbol.startsWith('BINANCE:');
 
     return (
-        <Link href={`/stocks/${encodeURIComponent(symbol)}`} className="bento-tile transition-colors hover:bg-hover/60">
+        <div className="col-span-3 max-lg:col-span-6 flex min-w-0 flex-col"><Link href={`/stocks/${encodeURIComponent(symbol)}`} className="bento-tile flex-1 transition-colors hover:bg-hover/60">
             <div className="bento-head">
                 <span className="bento-ico"><LineChart /></span>
                 <span className="truncate">{label}</span>
@@ -32,7 +33,7 @@ export default function PulseTile({ symbol, label, initial, labels = ENGLISH }: 
             </div>
             <PriceFlash value={quote?.c} className="bento-value self-start">
                 {quote?.c ? (
-                    isCrypto ? <>{formatAmount(quote.c)}<small> USDT</small></> : <><small>$</small>{formatAmount(quote.c)}</>
+                    isCrypto ? <>{formatAmount(quote.c)}<small> {quote.currency || 'USD'}</small></> : <><small>$</small>{formatAmount(quote.c)}</>
                 ) : '—'}
             </PriceFlash>
             <div className="bento-foot">
@@ -45,7 +46,7 @@ export default function PulseTile({ symbol, label, initial, labels = ENGLISH }: 
                     <span>{labels.unavailable}</span>
                 )}
             </div>
-        </Link>
+        </Link><div className="px-3"><QuoteHealth symbols={[symbol]} initial={{ [symbol]: initial }} /></div></div>
     );
 }
 
