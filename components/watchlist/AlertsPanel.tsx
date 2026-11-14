@@ -14,6 +14,7 @@ type AlertRow = {
     _id: string;
     symbol: string;
     targetPrice: number;
+    currency?: string | null;
     condition: 'ABOVE' | 'BELOW';
     triggered?: boolean;
     active?: boolean;
@@ -87,7 +88,7 @@ export default function AlertsPanel({ alerts }: { alerts: AlertRow[] }) {
                             <div className="min-w-0 flex-1">
                                 <p className="mono font-semibold text-foreground">{alert.symbol}</p>
                                 <p className="num truncate text-[12.5px] text-faint">
-                                    {t(alert.condition === 'ABOVE' ? 'above' : 'below', { price: formatPrice(alert.targetPrice) })}
+                                    {t(alert.condition === 'ABOVE' ? 'above' : 'below', { price: formatPrice(alert.targetPrice, alert.currency ?? null) })}
                                     {alert.expiresAt && !alert.triggered && ` · ${t('until', { date: format.dateTime(new Date(alert.expiresAt), { month: 'short', day: 'numeric' }) })}`}
                                 </p>
                             </div>
