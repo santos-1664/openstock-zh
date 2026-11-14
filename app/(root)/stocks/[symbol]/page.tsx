@@ -3,6 +3,7 @@ import { CandlestickChart } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import TradingViewWidget from "@/components/TradingViewWidget";
 import StockHeader, { StockHeaderSkeleton } from "@/components/stocks/StockHeader";
+import ChartStudy from '@/components/stocks/ChartStudy';
 import StockChart from "@/components/stocks/StockChart";
 import Panel from "@/components/Panel";
 import {
@@ -46,7 +47,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
             <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,400px)]">
                 <div className="flex min-w-0 flex-col gap-3">
                     {isChartEmbeddable(tvSymbol) ? (
-                        <StockChart tvSymbol={tvSymbol} scriptUrl={`${scriptUrl}advanced-chart.js`} />
+                        <StockChart key={tvSymbol} tvSymbol={tvSymbol} scriptUrl={`${scriptUrl}advanced-chart.js`} />
                     ) : (
                         // TradingView refuses this exchange's chart in embeds; say so instead of showing its error
                         <Panel title={t('chartTitle')} sub={t('chartUnavailableSub')}>
@@ -62,6 +63,7 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
                             </div>
                         </Panel>
                     )}
+                    <ChartStudy key={symbol} symbol={symbol} />
                     <Panel title={t('financialsTitle')} sub={t('financialsSub')}>
                         <TradingViewWidget
                             scriptUrl={`${scriptUrl}financials.js`}
