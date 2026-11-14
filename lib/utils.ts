@@ -111,12 +111,15 @@ export const getChangeColorClass = (changePercent?: number) => {
     return changePercent > 0 ? 'text-green-500' : 'text-red-500';
 };
 
-export const formatPrice = (price: number, currency = 'USD') => {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency,
-        minimumFractionDigits: 2,
-    }).format(price);
+export const formatPrice = (price: number, currency: string | null = 'USD') => {
+    if (!Number.isFinite(price)) return '—';
+    const magnitude = Math.abs(price);
+    const digits = magnitude > 0 && magnitude < 1 ? Math.min(10, Math.max(4, 3 - Math.floor(Math.log10(magnitude)))) : 2;
+    const options = { minimumFractionDigits: 2, maximumFractionDigits: digits };
+    if (currency && /^[A-Z]{3}$/.test(currency)) {
+        try { return new Intl.NumberFormat('en-US', { ...options, style: 'currency', currency }).format(price); } catch { /* use explicit unit */ }
+    }
+    return new Intl.NumberFormat('en-US', options).format(price) + (currency ? ` ${currency}` : '');
 };
 
 // Alias for consistency
