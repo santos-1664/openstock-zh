@@ -5,6 +5,7 @@ export interface IAlert extends Document {
     userId: string;
     symbol: string;
     targetPrice: number;
+    currency?: string;
     condition: 'ABOVE' | 'BELOW';
     active: boolean;
     triggered: boolean;
@@ -18,6 +19,7 @@ const AlertSchema = new Schema<IAlert>(
     {
         userId: { type: String, required: true, index: true },
         symbol: { type: String, required: true, uppercase: true, trim: true },
+        currency: { type: String },
         targetPrice: { type: Number, required: true },
         condition: { type: String, enum: ['ABOVE', 'BELOW'], required: true },
         active: { type: Boolean, default: true },
