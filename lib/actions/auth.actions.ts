@@ -2,22 +2,17 @@
 
 import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
-import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
 import countryList from "react-select-country-list";
 import { clientIp, isRateLimited } from "@/lib/rate-limit";
 import { getTranslations } from "next-intl/server";
 
-const isOption = (options: readonly { value: string }[], value: unknown) => options.some((o) => o.value === value);
 const COUNTRY_CODES = new Set(countryList().getValues()); // the same list the sign-up country picker shows
 
-export const signUpWithEmail = async ({ email, password, fullName, country, investmentGoals, riskTolerance, preferredIndustry }: SignUpFormData) => {
+export const signUpWithEmail = async ({ email, password, fullName, country }: SignUpFormData) => {
     const t = await getTranslations('Errors');
     // Only accept profile options offered by the sign-up form.
     if (typeof fullName !== 'string' || !fullName.trim() || fullName.length > 80
-        || typeof country !== 'string' || !COUNTRY_CODES.has(country)
-        || !isOption(INVESTMENT_GOALS, investmentGoals)
-        || !isOption(RISK_TOLERANCE_OPTIONS, riskTolerance)
-        || !isOption(PREFERRED_INDUSTRIES, preferredIndustry)) {
+        || typeof country !== 'string' || !COUNTRY_CODES.has(country)) {
         return { success: false, error: t('signUpFailed') };
     }
     // Rate-limit account creation.
@@ -25,7 +20,7 @@ export const signUpWithEmail = async ({ email, password, fullName, country, inve
         return { success: false, error: t('tooManyAttempts') };
     }
     try {
-        const response = await auth.api.signUpEmail({ body: { email, password, name: fullName, country, investmentGoals, riskTolerance, preferredIndustry } })
+        const response = await auth.api.signUpEmail({ body: { email, password, name: fullName, country } })
 
         return { success: true, data: response }
     } catch (e) {
