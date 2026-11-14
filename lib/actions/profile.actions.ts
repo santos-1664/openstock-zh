@@ -1,32 +1,25 @@
 'use server';
 
+import countryList from "react-select-country-list";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/better-auth/auth";
 import { getTranslations } from "next-intl/server";
-import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
 
 export type ProfileInput = {
     name: string;
     country: string;
-    investmentGoals: string;
-    riskTolerance: string;
-    preferredIndustry: string;
 };
 
-const isOption = (options: readonly { value: string }[], value: string) => options.some((o) => o.value === value);
+
+const countries = new Set(countryList().getValues());
 
 // Every call acts on the signed-in user's own session; nothing here takes a user id from the client.
 export async function updateProfile(input: ProfileInput) {
     const t = await getTranslations('Errors');
-    const name = input.name.trim();
+    const name = typeof input.name === 'string' ? input.name.trim() : '';
     if (name.length < 2 || name.length > 80) return { success: false, error: t('nameLength') };
-    if (!/^[A-Z]{2}$/.test(input.country)) return { success: false, error: t('pickCountry') };
-    if (!isOption(INVESTMENT_GOALS, input.investmentGoals)
-        || !isOption(RISK_TOLERANCE_OPTIONS, input.riskTolerance)
-        || !isOption(PREFERRED_INDUSTRIES, input.preferredIndustry)) {
-        return { success: false, error: t('pickEachOption') };
-    }
+    if (!countries.has(input.country)) return { success: false, error: t('pickCountry') };
 
     try {
         await auth.api.updateUser({
@@ -34,9 +27,6 @@ export async function updateProfile(input: ProfileInput) {
             body: {
                 name,
                 country: input.country,
-                investmentGoals: input.investmentGoals,
-                riskTolerance: input.riskTolerance,
-                preferredIndustry: input.preferredIndustry,
             },
         });
         revalidatePath('/', 'layout');
