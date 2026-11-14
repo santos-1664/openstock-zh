@@ -14,6 +14,8 @@ import { useRouter } from 'next/navigation';
 interface CreateAlertModalProps {
     symbol: string;
     currentPrice?: number | null;
+    initialTargetPrice?: number;
+    initialCondition?: 'ABOVE' | 'BELOW';
     currency?: string;
     children?: React.ReactNode;
     onAlertCreated?: () => void;
@@ -24,7 +26,7 @@ const CONDITIONS = [
     { value: 'BELOW', labelKey: 'fallsBelow' },
 ] as const;
 
-export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD', children, onAlertCreated }: CreateAlertModalProps) {
+export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD', initialTargetPrice, initialCondition = 'ABOVE', children, onAlertCreated }: CreateAlertModalProps) {
     const t = useTranslations('CreateAlertModal');
     const router = useRouter();
     const [open, setOpen] = useState(false);
@@ -39,7 +41,11 @@ export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD
 
     const onOpenChange = (next: boolean) => {
         setOpen(next);
-        if (next) setTargetPrice(hasPrice ? currentPrice!.toFixed(2) : '');
+        if (next) {
+            const initial = initialTargetPrice && initialTargetPrice > 0 ? initialTargetPrice : hasPrice ? currentPrice! : null;
+            setTargetPrice(initial === null ? '' : String(Number(initial.toPrecision(10))));
+            setCondition(initialCondition);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -100,8 +106,8 @@ export default function CreateAlertModal({ symbol, currentPrice, currency = 'USD
                                     <input
                                         type="number"
                                         inputMode="decimal"
-                                        step="0.01"
-                                        min="0.01"
+                                        step="any"
+                                        min="0"
                                         required
                                         autoFocus
                                         value={targetPrice}
