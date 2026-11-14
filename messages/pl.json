@@ -134,8 +134,8 @@
     "fullNameRequired": "Imię i nazwisko są wymagane",
     "passwordLabel": "Hasło",
     "passwordPlaceholder": "Co najmniej 8 znaków",
-    "personalize": "Spersonalizuj",
-    "personalizeHint": "Zapisz swoje preferencje.",
+    "personalize": "Region rynku",
+    "personalizeHint": "Informacje rynkowe dla Twojego regionu.",
     "submit": "Załóż konto",
     "submitting": "Tworzenie konta…",
     "haveAccount": "Masz już konto?",
@@ -198,7 +198,7 @@
     "statPausedAlerts": "Wstrzymane alerty",
     "statSignInMethods": "Metody logowania",
     "detailsTitle": "Szczegóły",
-    "detailsSub": "Ustaw imię, kraj i osobiste preferencje",
+    "detailsSub": "Zaktualizuj imię i region rynku.",
     "signInMethodsTitle": "Metody logowania",
     "signInMethodsSub": "Jak możesz zalogować się na to konto",
     "methodCredential": "Adres e-mail i hasło",
@@ -636,7 +636,7 @@
     "unavailable": "Historia dzienna jest chwilowo niedostępna.",
     "retry": "Ponów",
     "range": "Zakres świec dziennych",
-    "days": "{count} dni",
+    "days": "{count} świec dziennych",
     "coverage": "{count} świec dziennych",
     "shortHistory": "Krótka historia: pokazano {count} dostępnych świec.",
     "high": "Maksimum okresu",
@@ -674,6 +674,19 @@
     "momentum": "Momentum",
     "volatility": "Zmienność",
     "clean": "Wyczyść wskaźniki",
-    "settingsHint": "Przyciski interwału i wskaźniki są zapisywane osobno dla każdej akcji. Zmiany przeładowują wykres; rysunki na wykresie nie są zapisywane."
+    "settingsHint": "Przyciski interwału i wskaźniki są zapisywane osobno dla każdej akcji. Zmiany przeładowują wykres; rysunki na wykresie nie są zapisywane.",
+    "dailyBasis": "Statystyki zawsze używają świec dziennych, niezależnie od interwału wykresu."
+  },
+  "QuoteHealth": {
+    "failed": "Odświeżanie nieudane; ostatnia wycena. Nieaktualne dane nie wyzwalają alertów.",
+    "stale": "Brak aktualnej wyceny; te dane nie wyzwalają alertów.",
+    "retry": "Ponów"
+  },
+  "StockWorkspace": {
+    "label": "Szczegóły instrumentu",
+    "chart": "Wykres",
+    "study": "Statystyki dzienne",
+    "company": "Spółka i finanse",
+    "technicals": "Analiza techniczna"
   }
 }
