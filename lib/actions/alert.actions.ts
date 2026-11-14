@@ -8,6 +8,7 @@ import { normalizeYahooQuoteSymbol } from '@/lib/yahoo';
 import { alertsEnabled, inAppAlertsEnabled } from '@/lib/market-data';
 import { getLiveQuotes } from '@/lib/actions/finnhub.actions';
 import { isRateLimited } from '@/lib/rate-limit';
+import { legacyQuoteCurrency } from '@/lib/quote-health';
 import { isAlertConditionMet } from '@/lib/alert-conditions';
 
 // A ticker (AAPL, BRK.B) or a Binance pair. Anything else, including markup, is rejected:
@@ -43,7 +44,10 @@ export async function createAlert(params: {
 
     try {
         // expiresAt and triggered come from the schema defaults, never from the caller
-        const newAlert = await Alert.create({ userId, symbol, targetPrice, condition, active: true });
+        const quote = (await getLiveQuotes([symbol]))?.[symbol];
+        const currency = quote?.currency ?? legacyQuoteCurrency(symbol);
+        if (!currency) throw new Error('Quote currency unavailable');
+        const newAlert = await Alert.create({ userId, symbol, targetPrice, condition, currency, active: true });
         revalidatePath('/watchlist');
         return JSON.parse(JSON.stringify(newAlert));
     } catch (error) {
@@ -57,7 +61,7 @@ export async function getUserAlerts() {
     const userId = await requireUserId();
     try {
         const alerts = await alertModel(await connectToDatabase()).find({ userId }).sort({ createdAt: -1 });
-        return JSON.parse(JSON.stringify(alerts));
+        return JSON.parse(JSON.stringify(alerts)).map((alert: { symbol: string; currency?: string }) => ({ ...alert, currency: alert.currency ?? legacyQuoteCurrency(alert.symbol) }));
     } catch (error) {
         console.error('Error fetching alerts:', error);
         return [];
@@ -66,26 +70,36 @@ export async function getUserAlerts() {
 
 // Personal deployments can deliver alerts inside the app, without an SMTP account or paid scheduler.
 // The owner and atomic active/triggered filter prevent cross-account reads and duplicate notifications.
-export async function checkUserAlerts() {
+async function runAlertCheck() {
     const userId = await requireUserId();
-    if (!inAppAlertsEnabled || await isRateLimited(`alerts:user:${userId}`, 4, 60)) return [];
+    if (!inAppAlertsEnabled || await isRateLimited(`alerts:user:${userId}`, 4, 60)) return { triggered: [], activeCount: null };
     const now = new Date();
     const Alert = alertModel(await connectToDatabase());
     const active = await Alert.find({ userId, active: true, triggered: false, expiresAt: { $gt: now } }).limit(50).lean();
-    if (!active.length) return [];
+    if (!active.length) return { triggered: [], activeCount: 0 };
     const quotes = await getLiveQuotes([...new Set(active.map((a) => a.symbol))]);
-    const triggered: { id: string; symbol: string; price: number; target: number }[] = [];
+    const triggered: { id: string; symbol: string; price: number; target: number; currency: string | null }[] = [];
     for (const alert of active) {
         const quote = quotes[alert.symbol];
         if (!isAlertConditionMet(alert, quote)) continue;
         const claimed = await Alert.findOneAndUpdate(
             { _id: alert._id, userId, active: true, triggered: false, expiresAt: { $gt: now } },
-            { $set: { active: false, triggered: true, triggeredAt: now, triggerPrice: quote!.c } },
+            { $set: { active: false, triggered: true, triggeredAt: now, triggerPrice: quote!.c, currency: quote?.currency ?? alert.currency ?? legacyQuoteCurrency(alert.symbol) } },
             { new: true },
         );
-        if (claimed) triggered.push({ id: String(alert._id), symbol: alert.symbol, price: quote!.c!, target: alert.targetPrice });
+        if (claimed) triggered.push({ id: String(alert._id), symbol: alert.symbol, price: quote!.c!, target: alert.targetPrice, currency: quote?.currency ?? alert.currency ?? legacyQuoteCurrency(alert.symbol) });
     }
-    return triggered;
+    return { triggered, activeCount: active.length - triggered.length };
+}
+
+export async function checkUserAlerts() { return (await runAlertCheck()).triggered; }
+export async function pollUserAlerts() { return runAlertCheck(); }
+export async function getActiveAlertCount() {
+    const userId = await requireUserId();
+    if (!inAppAlertsEnabled) return 0;
+    try {
+        return await alertModel(await connectToDatabase()).countDocuments({ userId, active: true, triggered: false, expiresAt: { $gt: new Date() } });
+    } catch { return null; }
 }
 
 // Delete an alert
