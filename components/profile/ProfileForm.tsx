@@ -5,9 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import InputField from "@/components/forms/InputField";
-import ChoiceChips from "@/components/forms/ChoiceChips";
 import { CountrySelectField } from "@/components/forms/CountrySelectField";
-import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
 import { updateProfile, type ProfileInput } from "@/lib/actions/profile.actions";
 
 export default function ProfileForm({ initial }: { initial: ProfileInput }) {
@@ -41,9 +39,6 @@ export default function ProfileForm({ initial }: { initial: ProfileInput }) {
                 validation={{ required: t('nameRequired'), minLength: { value: 2, message: t('nameMinLength') } }}
             />
             <CountrySelectField name="country" label={tPrefs('country')} control={control} error={errors.country} required />
-            <ChoiceChips name="investmentGoals" label={tPrefs('investmentGoal')} options={INVESTMENT_GOALS} optionGroup="investmentGoals" control={control} />
-            <ChoiceChips name="riskTolerance" label={tPrefs('riskTolerance')} options={RISK_TOLERANCE_OPTIONS} optionGroup="riskTolerance" control={control} />
-            <ChoiceChips name="preferredIndustry" label={tPrefs('preferredIndustry')} options={PREFERRED_INDUSTRIES} optionGroup="industries" control={control} />
             <div className="flex items-center gap-3 pt-1">
                 <button type="submit" disabled={isSubmitting || !isDirty} className="btn btn-primary">
                     {isSubmitting ? t('submitting') : t('submit')}
