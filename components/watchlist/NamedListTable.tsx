@@ -1,9 +1,9 @@
+import QuoteHealth, { QuoteValue } from '@/components/QuoteHealth';
 import Link from 'next/link';
 import { Star } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
-import ChangePill from '@/components/ChangePill';
 import { getWatchlistData } from '@/lib/actions/finnhub.actions';
-import { formatNumber, formatPrice } from '@/lib/utils';
+import { formatNumber } from '@/lib/utils';
 import RemoveFromListButton from './RemoveFromListButton';
 
 // The stocks inside one named list. Rendered on the server, so the quotes come from the same
@@ -37,7 +37,7 @@ export default async function NamedListTable({
     const storedCompany = new Map(symbols.map((s) => [s.symbol, s.company]));
 
     return (
-        <div className="overflow-x-auto rounded-[14px]">
+        <div><div className="px-3"><QuoteHealth symbols={rows.map(r => r.symbol)} initial={Object.fromEntries(rows.map(r => [r.symbol, r.quote ?? null]))} /></div><div className="overflow-x-auto rounded-[14px]">
             <table className="data-table">
                 <thead>
                     <tr>
@@ -71,10 +71,10 @@ export default async function NamedListTable({
                                     </span>
                                 </Link>
                             </td>
-                            <td className="is-num font-semibold text-foreground">{row.price ? formatPrice(row.price, row.currency) : '—'}</td>
-                            <td className="is-num"><ChangePill value={row.price ? row.changePercent : null} /></td>
+                            <td className="is-num font-semibold text-foreground"><QuoteValue symbol={row.symbol} initial={row.quote ?? null} field="price" currency={row.currency} /></td>
+                            <td className="is-num"><QuoteValue symbol={row.symbol} initial={row.quote ?? null} field="percent" currency={row.currency} /></td>
                             <td className="is-num text-muted-foreground">
-                                {row.price ? `${row.change > 0 ? '+' : ''}${row.change.toFixed(2)}` : '—'}
+                                <QuoteValue symbol={row.symbol} initial={row.quote ?? null} field="change" currency={row.currency} />
                             </td>
                             <td className="is-num text-muted-foreground">{row.marketCap ? formatNumber(row.marketCap) : '—'}</td>
                             <td>
@@ -87,6 +87,6 @@ export default async function NamedListTable({
                     })}
                 </tbody>
             </table>
-        </div>
+        </div></div>
     );
 }
