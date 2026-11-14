@@ -72,9 +72,6 @@ export default async function ProfilePage() {
                         initial={{
                             name: user.name,
                             country: user.country ?? 'US',
-                            investmentGoals: user.investmentGoals ?? 'Growth',
-                            riskTolerance: user.riskTolerance ?? 'Medium',
-                            preferredIndustry: user.preferredIndustry ?? 'Technology',
                         }}
                     />
                 </Panel>
