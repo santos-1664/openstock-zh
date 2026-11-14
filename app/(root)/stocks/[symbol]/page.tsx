@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import TradingViewWidget from "@/components/TradingViewWidget";
 import StockHeader, { StockHeaderSkeleton } from "@/components/stocks/StockHeader";
 import ChartStudy from '@/components/stocks/ChartStudy';
+import StockWorkspace from "@/components/stocks/StockWorkspace";
 import StockChart from "@/components/stocks/StockChart";
 import Panel from "@/components/Panel";
 import {
@@ -44,8 +45,8 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
                 <StockHeader symbol={symbol} />
             </Suspense>
 
-            <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,400px)]">
-                <div className="flex min-w-0 flex-col gap-3">
+            <StockWorkspace key={symbol}
+                chart={<>
                     {isChartEmbeddable(tvSymbol) ? (
                         <StockChart key={tvSymbol} tvSymbol={tvSymbol} scriptUrl={`${scriptUrl}advanced-chart.js`} />
                     ) : (
@@ -63,22 +64,14 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
                             </div>
                         </Panel>
                     )}
-                    <ChartStudy key={symbol} symbol={symbol} />
+                </>}
+                study={<ChartStudy symbol={symbol} />}
+                company={<div className="grid gap-3 xl:grid-cols-2">
                     <Panel title={t('financialsTitle')} sub={t('financialsSub')}>
                         <TradingViewWidget
                             scriptUrl={`${scriptUrl}financials.js`}
                             config={COMPANY_FINANCIALS_WIDGET_CONFIG(tvSymbol, locale)}
                             height={500}
-                        />
-                    </Panel>
-                </div>
-
-                <div className="flex min-w-0 flex-col gap-3">
-                    <Panel title={t('technicalsTitle')} sub={t('technicalsSub')}>
-                        <TradingViewWidget
-                            scriptUrl={`${scriptUrl}technical-analysis.js`}
-                            config={TECHNICAL_ANALYSIS_WIDGET_CONFIG(tvSymbol, locale)}
-                            height={400}
                         />
                     </Panel>
                     <Suspense fallback={null}>
@@ -91,8 +84,17 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
                             height={440}
                         />
                     </Panel>
-                </div>
-            </div>
+                </div>}
+                technicals={<>
+                    <Panel title={t('technicalsTitle')} sub={t('technicalsSub')}>
+                        <TradingViewWidget
+                            scriptUrl={`${scriptUrl}technical-analysis.js`}
+                            config={TECHNICAL_ANALYSIS_WIDGET_CONFIG(tvSymbol, locale)}
+                            height={400}
+                        />
+                    </Panel>
+                </>}
+            />
         </>
     );
 }
