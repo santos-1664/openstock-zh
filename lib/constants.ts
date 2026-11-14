@@ -140,7 +140,7 @@ export const singleQuoteConfig = (symbol: string, locale: Locale = 'en') => ({
 export const CANDLE_CHART_WIDGET_CONFIG = (symbol: string, locale: Locale = 'en') => ({
     allow_symbol_change: false,
     calendar: false,
-    details: true,
+    details: false,
     hide_side_toolbar: false, // drawing tools (trend lines, Fibonacci, text); drawings last until reload
     hide_top_toolbar: false,
     hide_legend: false,
