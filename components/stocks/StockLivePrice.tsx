@@ -1,5 +1,6 @@
 'use client';
 
+import QuoteHealth from "@/components/QuoteHealth";
 import ChangePill from "@/components/ChangePill";
 import { LocalizedDataFreshness } from "@/components/DataFreshness";
 import PriceFlash from "@/components/PriceFlash";
@@ -11,9 +12,9 @@ const StockLivePrice = ({ symbol, initial, currency }: { symbol: string; initial
     const quote = live[symbol] ?? initial;
 
     return (
-        <div className="flex items-end gap-3">
+        <div><div className="flex items-end gap-3">
             <PriceFlash value={quote?.c} className="bento-value px-1 text-[32px]">
-                {quote?.c ? formatPrice(quote.c, currency) : '—'}
+                {quote?.c ? formatPrice(quote.c, quote.currency ?? currency) : '—'}
             </PriceFlash>
             <div className="flex flex-col items-start gap-1 pb-0.5">
                 <span className="flex items-center gap-2">
@@ -25,7 +26,7 @@ const StockLivePrice = ({ symbol, initial, currency }: { symbol: string; initial
                 <LocalizedDataFreshness tradeTime={quote?.t} source={quote?.source} />
                 {quote?.source && <span className="text-[11px] text-faint">{quote.source}</span>}
             </div>
-        </div>
+        </div><QuoteHealth symbols={[symbol]} initial={{ [symbol]: initial }} /></div>
     );
 };
 
