@@ -69,6 +69,7 @@ export type YahooDailyQuote = {
     low?: number;
     previousClose?: number;
     tradeTime?: number;
+    receivedAt?: number;
     exchange?: string;
 };
 
